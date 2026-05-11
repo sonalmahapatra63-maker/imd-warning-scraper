@@ -1,58 +1,38 @@
-"""
-IMD District-Wise Nowcast Warning Scraper
-==========================================
-
-Cloud-ready Playwright scraper for IMD amCharts district warning maps.
-
-Features:
-- Works in GitHub Actions
-- Handles JavaScript-rendered SVG maps
-- Multiple fallback extraction methods
-- Saves JSON + CSV + historical JSONL
-- Uploads raw HTML snapshots for debugging
-
-Run locally:
-    pip install -r requirements.txt
-    python -m playwright install chromium
-    python scripts/scrape_imd.py
-
-GitHub Actions:
-    Uses environment variable:
-        IMD_STATE_ID=10
-"""
-
 import os
-import sys
-import json
 import re
 import csv
+import json
+import sys
 
-from datetime import datetime, timezone
 from pathlib import Path
 from collections import Counter
+from datetime import datetime, timezone
+
+from bs4 import BeautifulSoup
 
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
-from bs4 import BeautifulSoup
-
 
 # ─────────────────────────────────────────────────────────────
-# Configuration
+# CONFIG
 # ─────────────────────────────────────────────────────────────
 
 STATE_ID = os.getenv("IMD_STATE_ID", "10")
 
-BASE_URL = (
-    f"https://mausam.imd.gov.in/imd_latest/"
+DISTRICT_URL = (
+    "https://mausam.imd.gov.in/imd_latest/"
     f"contents/districtwisewarnings_mc.php?id={STATE_ID}"
+)
+
+STATION_URL = (
+    "https://mausam.imd.gov.in/imd_latest/"
+    f"contents/stationwise-nowcast-warning_mc.php?id={STATE_ID}"
 )
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-
-# IMD standard warning colors
 WARNING_COLOR_MAP = {
     "#008000": "No Warning",
     "#ffff00": "Watch",
@@ -62,58 +42,119 @@ WARNING_COLOR_MAP = {
 
 
 # ─────────────────────────────────────────────────────────────
-# Helper Functions
+# HELPERS
 # ─────────────────────────────────────────────────────────────
 
 def normalize_color(color: str) -> str:
+
     if not color:
         return ""
 
     color = color.strip().lower()
 
-    # Convert rgb() → hex if needed
     rgb_match = re.match(
         r"rgb\((\d+),\s*(\d+),\s*(\d+)\)",
         color
     )
 
     if rgb_match:
+
         r, g, b = map(int, rgb_match.groups())
+
         return "#{:02x}{:02x}{:02x}".format(r, g, b)
 
     return color
 
 
 def color_to_severity(color: str) -> str:
+
     color = normalize_color(color)
 
-    for known_color, severity in WARNING_COLOR_MAP.items():
-        if color == known_color.lower():
-            return severity
+    for k, v in WARNING_COLOR_MAP.items():
+
+        if color == k.lower():
+            return v
 
     return f"Unknown ({color})"
 
 
 # ─────────────────────────────────────────────────────────────
-# HTML Extraction Logic
+# PLAYWRIGHT PAGE LOADER
 # ─────────────────────────────────────────────────────────────
 
-def extract_warnings_from_html(html: str) -> list[dict]:
+def load_page(url: str, screenshot_name: str):
+
+    print(f"\n[scraper] Loading: {url}")
+
+    with sync_playwright() as p:
+
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-setuid-sandbox",
+            ]
+        )
+
+        context = browser.new_context(
+            viewport={"width": 1400, "height": 1200},
+            locale="en-IN"
+        )
+
+        page = context.new_page()
+
+        try:
+
+            page.goto(
+                url,
+                wait_until="networkidle",
+                timeout=90000
+            )
+
+        except PlaywrightTimeout:
+
+            print("[scraper] WARNING: timeout occurred")
+
+        try:
+
+            page.wait_for_selector("svg path", timeout=40000)
+            page.wait_for_timeout(8000)
+
+        except PlaywrightTimeout:
+
+            print("[scraper] WARNING: SVG not detected")
+
+        screenshot_path = DATA_DIR / screenshot_name
+
+        page.screenshot(
+            path=str(screenshot_path),
+            full_page=True
+        )
+
+        html = page.content()
+
+        browser.close()
+
+    return html
+
+
+# ─────────────────────────────────────────────────────────────
+# EXTRACTION
+# ─────────────────────────────────────────────────────────────
+
+def extract_map_records(html: str, record_type: str):
 
     soup = BeautifulSoup(html, "html.parser")
 
     records = []
 
-    # =========================================================
-    # Strategy 1
-    # SVG PATHS
-    # =========================================================
-
     svg_paths = soup.select("svg path")
 
     for path in svg_paths:
 
-        district = (
+        label = (
             path.get("aria-label")
             or path.get("title")
             or ""
@@ -125,19 +166,16 @@ def extract_warnings_from_html(html: str) -> list[dict]:
             or ""
         ).strip()
 
-        if district and fill:
+        if label and fill:
 
             records.append({
-                "district": district,
+                "type": record_type,
+                "name": label,
                 "warning_color": fill,
                 "severity": color_to_severity(fill),
             })
 
-    # =========================================================
-    # Strategy 2
-    # Embedded amCharts JSON
-    # =========================================================
-
+    # fallback JS extraction
     if not records:
 
         scripts = soup.find_all("script")
@@ -165,11 +203,12 @@ def extract_warnings_from_html(html: str) -> list[dict]:
                 raw_json = match.group(1)
 
                 try:
+
                     items = json.loads(raw_json)
 
                     for item in items:
 
-                        district = (
+                        name = (
                             item.get("title")
                             or item.get("name")
                             or item.get("district")
@@ -184,10 +223,11 @@ def extract_warnings_from_html(html: str) -> list[dict]:
                             or ""
                         )
 
-                        if district:
+                        if name:
 
                             records.append({
-                                "district": district,
+                                "type": record_type,
+                                "name": name,
                                 "warning_color": color,
                                 "severity": color_to_severity(color),
                             })
@@ -195,272 +235,86 @@ def extract_warnings_from_html(html: str) -> list[dict]:
                 except Exception:
                     pass
 
-    # =========================================================
-    # Strategy 3
-    # HTML TABLES
-    # =========================================================
-
-    if not records:
-
-        tables = soup.find_all("table")
-
-        for table in tables:
-
-            rows = table.find_all("tr")
-
-            for row in rows:
-
-                cells = row.find_all(["td", "th"])
-
-                if len(cells) < 2:
-                    continue
-
-                district = cells[0].get_text(strip=True)
-
-                warning_cell = cells[1]
-
-                style = warning_cell.get("style", "")
-
-                color_match = re.search(
-                    r"background(?:-color)?\s*:\s*([#\w]+)",
-                    style,
-                    re.IGNORECASE
-                )
-
-                color = (
-                    color_match.group(1)
-                    if color_match
-                    else warning_cell.get_text(strip=True)
-                )
-
-                if district.lower() in [
-                    "district",
-                    "sl.no",
-                    "#",
-                ]:
-                    continue
-
-                records.append({
-                    "district": district,
-                    "warning_color": color,
-                    "severity": color_to_severity(color),
-                })
-
-    # Remove duplicates
     unique = {}
 
     for item in records:
-        unique[item["district"]] = item
+        unique[item["name"]] = item
 
     return list(unique.values())
 
 
 # ─────────────────────────────────────────────────────────────
-# Scraper
+# SAVE FUNCTIONS
 # ─────────────────────────────────────────────────────────────
 
-def scrape(state_id: str = STATE_ID) -> dict:
+def save_snapshot(name: str, html: str, timestamp: str):
 
-    url = (
-        "https://mausam.imd.gov.in/imd_latest/"
-        f"contents/districtwisewarnings_mc.php?id={state_id}"
-    )
+    path = DATA_DIR / f"{name}_{timestamp}.html"
 
-    print(f"[scraper] Target URL: {url}")
-
-    with sync_playwright() as p:
-
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-setuid-sandbox",
-            ]
-        )
-
-        context = browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (X11; Linux x86_64) "
-                "AppleWebKit/537.36 "
-                "(KHTML, like Gecko) "
-                "Chrome/124.0.0.0 Safari/537.36"
-            ),
-            viewport={
-                "width": 1400,
-                "height": 1200,
-            },
-            locale="en-IN",
-        )
-
-        page = context.new_page()
-
-        print("[scraper] Loading page...")
-
-        try:
-
-            page.goto(
-                url,
-                wait_until="networkidle",
-                timeout=90_000
-            )
-
-        except PlaywrightTimeout:
-
-            print(
-                "[scraper] WARNING: "
-                "Page load timeout. Continuing..."
-            )
-
-        # Wait for SVG render
-        try:
-
-            page.wait_for_selector(
-                "svg path",
-                timeout=40_000
-            )
-
-            print(
-                "[scraper] SVG detected. "
-                "Waiting for full render..."
-            )
-
-            page.wait_for_timeout(8000)
-
-        except PlaywrightTimeout:
-
-            print(
-                "[scraper] WARNING: "
-                "SVG not detected."
-            )
-
-        # Screenshot for debugging
-        screenshot_path = (
-            DATA_DIR / f"screenshot_{state_id}.png"
-        )
-
-        page.screenshot(
-            path=str(screenshot_path),
-            full_page=True
-        )
-
-        html = page.content()
-
-        browser.close()
-
-    return {
-        "url": url,
-        "html": html,
-    }
+    path.write_text(html, encoding="utf-8")
 
 
-# ─────────────────────────────────────────────────────────────
-# Save Functions
-# ─────────────────────────────────────────────────────────────
+def save_json(filename: str, records: list, meta: dict):
 
-def save_snapshot(html: str, timestamp: str):
-
-    path = DATA_DIR / f"snapshot_{timestamp}.html"
-
-    path.write_text(
-        html,
-        encoding="utf-8"
-    )
-
-    print(f"[scraper] Snapshot saved → {path}")
-
-    return path
-
-
-def save_json(records: list[dict], meta: dict):
-
-    path = DATA_DIR / "warnings_latest.json"
+    path = DATA_DIR / filename
 
     output = {
         "meta": meta,
         "count": len(records),
-        "districts": records,
+        "records": records,
     }
 
     path.write_text(
-        json.dumps(
-            output,
-            indent=2,
-            ensure_ascii=False
-        ),
+        json.dumps(output, indent=2, ensure_ascii=False),
         encoding="utf-8"
     )
 
-    print(f"[scraper] JSON saved → {path}")
 
-    return path
+def save_csv(filename: str, records: list, meta: dict):
 
-
-def save_csv(records: list[dict], meta: dict):
-
-    path = DATA_DIR / "warnings_latest.csv"
+    path = DATA_DIR / filename
 
     fieldnames = [
         "scraped_at",
         "state_id",
-        "district",
+        "type",
+        "name",
         "warning_color",
         "severity",
     ]
 
-    with open(
-        path,
-        "w",
-        newline="",
-        encoding="utf-8"
-    ) as f:
+    with open(path, "w", newline="", encoding="utf-8") as f:
 
-        writer = csv.DictWriter(
-            f,
-            fieldnames=fieldnames
-        )
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
 
         writer.writeheader()
 
-        for record in records:
+        for r in records:
 
             writer.writerow({
                 "scraped_at": meta["scraped_at"],
                 "state_id": meta["state_id"],
-                **record,
+                **r,
             })
 
-    print(f"[scraper] CSV saved → {path}")
 
-    return path
-
-
-def append_history(records: list[dict], meta: dict):
+def append_history(records: list, meta: dict):
 
     path = DATA_DIR / "warnings_history.jsonl"
 
-    with open(
-        path,
-        "a",
-        encoding="utf-8"
-    ) as f:
+    with open(path, "a", encoding="utf-8") as f:
 
         f.write(
             json.dumps({
                 "meta": meta,
-                "districts": records,
+                "records": records,
             }, ensure_ascii=False)
             + "\n"
         )
 
-    print(f"[scraper] History appended → {path}")
-
-    return path
-
 
 # ─────────────────────────────────────────────────────────────
-# Main
+# MAIN
 # ─────────────────────────────────────────────────────────────
 
 def main():
@@ -473,55 +327,118 @@ def main():
         timezone.utc
     ).strftime("%Y-%m-%d %H:%M UTC")
 
-    result = scrape(STATE_ID)
+    # DISTRICT PAGE
 
-    html = result["html"]
-
-    # Save raw snapshot
-    save_snapshot(html, timestamp)
-
-    # Extract data
-    records = extract_warnings_from_html(html)
-
-    print(
-        f"[scraper] Extracted "
-        f"{len(records)} district records"
+    district_html = load_page(
+        DISTRICT_URL,
+        f"district_warning_{STATE_ID}.png"
     )
 
-    if not records:
+    save_snapshot(
+        "district_snapshot",
+        district_html,
+        timestamp
+    )
 
-        print(
-            "\n[scraper] ERROR: "
-            "No district data found.\n"
-            "Check snapshot HTML + screenshot.\n"
-        )
+    district_records = extract_map_records(
+        district_html,
+        "district"
+    )
 
+    # STATION PAGE
+
+    station_html = load_page(
+        STATION_URL,
+        f"station_warning_{STATE_ID}.png"
+    )
+
+    save_snapshot(
+        "station_snapshot",
+        station_html,
+        timestamp
+    )
+
+    station_records = extract_map_records(
+        station_html,
+        "station"
+    )
+
+    # COMBINED
+
+    all_records = district_records + station_records
+
+    print(f"\n[scraper] District records : {len(district_records)}")
+    print(f"[scraper] Station records  : {len(station_records)}")
+    print(f"[scraper] Total records    : {len(all_records)}")
+
+    if not all_records:
+
+        print("\n[scraper] ERROR: no data extracted")
         sys.exit(1)
 
     meta = {
         "scraped_at": timestamp_human,
-        "url": result["url"],
         "state_id": STATE_ID,
+        "district_url": DISTRICT_URL,
+        "station_url": STATION_URL,
     }
 
-    save_json(records, meta)
+    # DISTRICT FILES
 
-    save_csv(records, meta)
-
-    append_history(records, meta)
-
-    print("\n[scraper] ✅ Completed Successfully\n")
-
-    print("[scraper] Severity Summary:")
-
-    severity_counts = Counter(
-        r["severity"]
-        for r in records
+    save_json(
+        "district_warnings_latest.json",
+        district_records,
+        meta
     )
 
-    for severity, count in severity_counts.items():
+    save_csv(
+        "district_warnings_latest.csv",
+        district_records,
+        meta
+    )
+
+    # STATION FILES
+
+    save_json(
+        "station_warnings_latest.json",
+        station_records,
+        meta
+    )
+
+    save_csv(
+        "station_warnings_latest.csv",
+        station_records,
+        meta
+    )
+
+    # COMBINED FILES
+
+    save_json(
+        "warnings_latest.json",
+        all_records,
+        meta
+    )
+
+    save_csv(
+        "warnings_latest.csv",
+        all_records,
+        meta
+    )
+
+    append_history(all_records, meta)
+
+    print("\n[scraper] Severity Summary")
+
+    counts = Counter(
+        r["severity"]
+        for r in all_records
+    )
+
+    for severity, count in counts.items():
 
         print(f"  {severity}: {count}")
+
+    print("\n[scraper] SUCCESS")
 
 
 if __name__ == "__main__":
