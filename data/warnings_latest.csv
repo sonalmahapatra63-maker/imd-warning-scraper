@@ -1,61 +1,61 @@
 scraped_at,state_id,type,name,warning_color,severity
-2026-05-11 18:19 UTC,10,district,ANUGUL,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,BALANGIR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,BALESHWAR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,BARAGARH,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,BHADRAK,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,CUTTACK,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,DEOGARH,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,DHENKANAL,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,GAJAPATHI,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,GANJAM,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,JAGATSINGHPUR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,JAJAPUR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,JHARSUGUDA,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KALAHANDI,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KANDHAMAL,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KENDRAPARHA,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KENDUJHAR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KHORDHA,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,KORAPUT,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,MALKANGIRI,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,MAYURBHANJ,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,NABARANGAPUR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,NAYAGARH,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,NUAPARHA,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,PURI,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,RAYAGARHA,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,SAMBALPUR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,SUBARNAPUR,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,SUNDARGARH,#008000,No Warning
-2026-05-11 18:19 UTC,10,district,BAUDA,#008000,No Warning
-2026-05-11 18:19 UTC,10,station,Andhra Pradesh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Arunachal Pradesh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Assam,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Bihar,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Chhattisgarh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Delhi,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Goa,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Gujarat,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Himachal Pradesh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Haryana,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Jharkhand,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,JammuandKashmir,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Karnataka,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Kerala,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Maharashtra,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Meghalaya,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Manipur,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Madhya Pradesh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Mizoram,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Nagaland,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Odisha,#AAF0D1,Unknown (#aaf0d1)
-2026-05-11 18:19 UTC,10,station,Punjab,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Rajasthan,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Sikkim,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Telangana,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Tamil Nadu,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Tripura,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Uttar Pradesh,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,Uttarakhand,#FFFFFF,Unknown (#ffffff)
-2026-05-11 18:19 UTC,10,station,West Bengal,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,district,ANUGUL,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,BALANGIR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,BALESHWAR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,BARAGARH,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,BHADRAK,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,CUTTACK,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,DEOGARH,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,DHENKANAL,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,GAJAPATHI,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,GANJAM,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,JAGATSINGHPUR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,JAJAPUR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,JHARSUGUDA,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KALAHANDI,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KANDHAMAL,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KENDRAPARHA,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KENDUJHAR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KHORDHA,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,KORAPUT,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,MALKANGIRI,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,MAYURBHANJ,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,NABARANGAPUR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,NAYAGARH,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,NUAPARHA,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,PURI,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,RAYAGARHA,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,SAMBALPUR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,SUBARNAPUR,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,SUNDARGARH,#008000,No Warning
+2026-05-11 18:29 UTC,10,district,BAUDA,#008000,No Warning
+2026-05-11 18:29 UTC,10,station,Andhra Pradesh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Arunachal Pradesh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Assam,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Bihar,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Chhattisgarh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Delhi,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Goa,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Gujarat,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Himachal Pradesh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Haryana,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Jharkhand,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,JammuandKashmir,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Karnataka,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Kerala,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Maharashtra,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Meghalaya,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Manipur,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Madhya Pradesh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Mizoram,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Nagaland,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Odisha,#AAF0D1,Unknown (#aaf0d1)
+2026-05-11 18:29 UTC,10,station,Punjab,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Rajasthan,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Sikkim,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Telangana,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Tamil Nadu,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Tripura,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Uttar Pradesh,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,Uttarakhand,#FFFFFF,Unknown (#ffffff)
+2026-05-11 18:29 UTC,10,station,West Bengal,#FFFFFF,Unknown (#ffffff)
