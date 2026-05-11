@@ -42,6 +42,45 @@ WARNING_COLOR_MAP = {
 
 
 # ─────────────────────────────────────────────────────────────
+# CLEAN OLD FILES
+# ─────────────────────────────────────────────────────────────
+
+def clean_old_files():
+
+    print("\n[scraper] Cleaning old files...")
+
+    patterns = [
+        "*.html",
+        "*.png",
+        "*.csv",
+        "*.json",
+    ]
+
+    keep_files = {
+        ".gitkeep",
+        "warnings_history.jsonl",
+    }
+
+    deleted = 0
+
+    for pattern in patterns:
+
+        for file in DATA_DIR.glob(pattern):
+
+            if file.name in keep_files:
+                continue
+
+            try:
+                file.unlink()
+                deleted += 1
+
+            except Exception as e:
+                print(f"[scraper] Failed deleting {file.name}: {e}")
+
+    print(f"[scraper] Deleted {deleted} old files")
+
+
+# ─────────────────────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────────────────────
 
@@ -79,7 +118,7 @@ def color_to_severity(color: str) -> str:
 
 
 # ─────────────────────────────────────────────────────────────
-# PLAYWRIGHT PAGE LOADER
+# PAGE LOADER
 # ─────────────────────────────────────────────────────────────
 
 def load_page(url: str, screenshot_name: str):
@@ -99,8 +138,11 @@ def load_page(url: str, screenshot_name: str):
         )
 
         context = browser.new_context(
-            viewport={"width": 1400, "height": 1200},
-            locale="en-IN"
+            viewport={
+                "width": 1400,
+                "height": 1200,
+            },
+            locale="en-IN",
         )
 
         page = context.new_page()
@@ -119,7 +161,11 @@ def load_page(url: str, screenshot_name: str):
 
         try:
 
-            page.wait_for_selector("svg path", timeout=40000)
+            page.wait_for_selector(
+                "svg",
+                timeout=40000
+            )
+
             page.wait_for_timeout(8000)
 
         except PlaywrightTimeout:
@@ -150,6 +196,10 @@ def extract_map_records(html: str, record_type: str):
 
     records = []
 
+    # =========================================================
+    # SVG PATHS
+    # =========================================================
+
     svg_paths = soup.select("svg path")
 
     for path in svg_paths:
@@ -175,30 +225,61 @@ def extract_map_records(html: str, record_type: str):
                 "severity": color_to_severity(fill),
             })
 
-    # fallback JS extraction
-    if not records:
+    # =========================================================
+    # SVG CIRCLES / STATIONS
+    # =========================================================
 
-        scripts = soup.find_all("script")
+    svg_circles = soup.select("svg circle")
 
-        for script in scripts:
+    for circle in svg_circles:
 
-            text = script.string or script.get_text()
+        label = (
+            circle.get("aria-label")
+            or circle.get("title")
+            or ""
+        ).strip()
 
-            if not text:
-                continue
+        fill = (
+            circle.get("fill")
+            or circle.get("stroke")
+            or ""
+        ).strip()
 
-            patterns = [
-                r"dataProvider\s*[:=]\s*(\[[\s\S]*?\])",
-                r"polygonSeries\.data\s*=\s*(\[[\s\S]*?\])",
-                r"chart\.data\s*=\s*(\[[\s\S]*?\])",
-            ]
+        if label and fill:
 
-            for pattern in patterns:
+            records.append({
+                "type": record_type,
+                "name": label,
+                "warning_color": fill,
+                "severity": color_to_severity(fill),
+            })
 
-                match = re.search(pattern, text)
+    # =========================================================
+    # EMBEDDED JSON
+    # =========================================================
 
-                if not match:
-                    continue
+    scripts = soup.find_all("script")
+
+    for script in scripts:
+
+        text = script.string or script.get_text()
+
+        if not text:
+            continue
+
+        patterns = [
+            r"dataProvider\s*[:=]\s*(\[[\s\S]*?\])",
+            r"chart\.data\s*=\s*(\[[\s\S]*?\])",
+            r"polygonSeries\.data\s*=\s*(\[[\s\S]*?\])",
+            r"imageSeries\.data\s*=\s*(\[[\s\S]*?\])",
+            r"pointSeries\.data\s*=\s*(\[[\s\S]*?\])",
+        ]
+
+        for pattern in patterns:
+
+            matches = re.finditer(pattern, text)
+
+            for match in matches:
 
                 raw_json = match.group(1)
 
@@ -212,6 +293,7 @@ def extract_map_records(html: str, record_type: str):
                             item.get("title")
                             or item.get("name")
                             or item.get("district")
+                            or item.get("station")
                             or item.get("id")
                             or ""
                         )
@@ -235,6 +317,10 @@ def extract_map_records(html: str, record_type: str):
                 except Exception:
                     pass
 
+    # =========================================================
+    # REMOVE DUPLICATES
+    # =========================================================
+
     unique = {}
 
     for item in records:
@@ -251,7 +337,10 @@ def save_snapshot(name: str, html: str, timestamp: str):
 
     path = DATA_DIR / f"{name}_{timestamp}.html"
 
-    path.write_text(html, encoding="utf-8")
+    path.write_text(
+        html,
+        encoding="utf-8"
+    )
 
 
 def save_json(filename: str, records: list, meta: dict):
@@ -265,7 +354,11 @@ def save_json(filename: str, records: list, meta: dict):
     }
 
     path.write_text(
-        json.dumps(output, indent=2, ensure_ascii=False),
+        json.dumps(
+            output,
+            indent=2,
+            ensure_ascii=False
+        ),
         encoding="utf-8"
     )
 
@@ -283,9 +376,17 @@ def save_csv(filename: str, records: list, meta: dict):
         "severity",
     ]
 
-    with open(path, "w", newline="", encoding="utf-8") as f:
+    with open(
+        path,
+        "w",
+        newline="",
+        encoding="utf-8"
+    ) as f:
 
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(
+            f,
+            fieldnames=fieldnames
+        )
 
         writer.writeheader()
 
@@ -302,7 +403,11 @@ def append_history(records: list, meta: dict):
 
     path = DATA_DIR / "warnings_history.jsonl"
 
-    with open(path, "a", encoding="utf-8") as f:
+    with open(
+        path,
+        "a",
+        encoding="utf-8"
+    ) as f:
 
         f.write(
             json.dumps({
@@ -318,6 +423,8 @@ def append_history(records: list, meta: dict):
 # ─────────────────────────────────────────────────────────────
 
 def main():
+
+    clean_old_files()
 
     timestamp = datetime.now(
         timezone.utc
