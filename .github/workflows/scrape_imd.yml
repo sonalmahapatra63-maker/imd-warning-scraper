@@ -1,0 +1,70 @@
+name: IMD District-Wise Warning Scraper
+
+on:
+  schedule:
+    # Runs every 3 hours (IMD updates warnings frequently)
+    - cron: '0 */3 * * *'
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write  # Needed to commit scraped data back to repo
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ── 1. Checkout the repo ──────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Set up Python ──────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # ── 3. Install Python dependencies ────────────────────────────────────
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # ── 4. Install Playwright + Chromium ──────────────────────────────────
+      - name: Install Playwright browsers
+        run: |
+          playwright install chromium --with-deps
+
+      # ── 5. Run the scraper ────────────────────────────────────────────────
+      - name: Run IMD scraper
+        run: |
+          python scripts/scrape_imd.py
+        env:
+          IMD_STATE_ID: '10'   # 10 = Odisha/Bhubaneswar. Change for other states.
+          PYTHONUNBUFFERED: '1'
+
+      # ── 6. Commit scraped data back to repo ───────────────────────────────
+      - name: Commit and push data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No data changes — skipping commit."
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "data: IMD scrape at ${TIMESTAMP}"
+            git push
+          fi
+
+      # ── 7. Upload raw HTML snapshot as artifact (for debugging) ───────────
+      - name: Upload debug snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: imd-page-snapshot
+          path: data/snapshot_*.html
+          retention-days: 3
+          if-no-files-found: ignore
