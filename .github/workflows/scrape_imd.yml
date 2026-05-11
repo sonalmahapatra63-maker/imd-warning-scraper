@@ -1,70 +1,67 @@
-name: IMD District-Wise Warning Scraper
+name: IMD Multi Warning Scraper
 
 on:
   schedule:
-    # Runs every 3 hours (IMD updates warnings frequently)
     - cron: '0 */3 * * *'
-  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Needed to commit scraped data back to repo
+  contents: write
 
 jobs:
   scrape:
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
-      # ── 1. Checkout the repo ──────────────────────────────────────────────
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. Set up Python ──────────────────────────────────────────────────
-      - name: Set up Python 3.11
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
-      # ── 3. Install Python dependencies ────────────────────────────────────
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
 
-      # ── 4. Install Playwright + Chromium ──────────────────────────────────
-      - name: Install Playwright browsers
+      - name: Install Playwright Chromium
         run: |
           python -m playwright install chromium
 
-      # ── 5. Run the scraper ────────────────────────────────────────────────
-      - name: Run IMD scraper
+      - name: Run scraper
         run: |
           python scripts/scrape_imd.py
         env:
-          IMD_STATE_ID: '10'   # 10 = Odisha/Bhubaneswar. Change for other states.
+          IMD_STATE_ID: '10'
           PYTHONUNBUFFERED: '1'
 
-      # ── 6. Commit scraped data back to repo ───────────────────────────────
       - name: Commit and push data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
           git add data/
-          # Only commit if there are actual changes
+
           if git diff --staged --quiet; then
-            echo "No data changes — skipping commit."
+            echo "No changes detected"
           else
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "data: IMD scrape at ${TIMESTAMP}"
+            git commit -m "data: IMD scrape ${TIMESTAMP}"
             git push
           fi
 
-      # ── 7. Upload raw HTML snapshot as artifact (for debugging) ───────────
-      - name: Upload debug snapshot
+      - name: Upload snapshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: imd-page-snapshot
-          path: data/snapshot_*.html
+          name: imd-snapshots
+          path: |
+            data/*.html
+            data/*.png
           retention-days: 3
           if-no-files-found: ignore
