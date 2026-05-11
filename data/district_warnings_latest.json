@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-11 18:40 UTC",
+    "scraped_at": "2026-05-11 19:54 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -10,7 +10,7 @@
     {
       "type": "district",
       "name": "ANUGUL",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -18,7 +18,7 @@
     {
       "type": "district",
       "name": "BALANGIR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -26,7 +26,7 @@
     {
       "type": "district",
       "name": "BALESHWAR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -34,7 +34,7 @@
     {
       "type": "district",
       "name": "BARAGARH",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -42,7 +42,7 @@
     {
       "type": "district",
       "name": "BHADRAK",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -50,7 +50,7 @@
     {
       "type": "district",
       "name": "CUTTACK",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -58,7 +58,7 @@
     {
       "type": "district",
       "name": "DEOGARH",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -66,7 +66,7 @@
     {
       "type": "district",
       "name": "DHENKANAL",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -74,7 +74,7 @@
     {
       "type": "district",
       "name": "GAJAPATHI",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -82,7 +82,7 @@
     {
       "type": "district",
       "name": "GANJAM",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -90,7 +90,7 @@
     {
       "type": "district",
       "name": "JAGATSINGHPUR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -98,7 +98,7 @@
     {
       "type": "district",
       "name": "JAJAPUR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -106,7 +106,7 @@
     {
       "type": "district",
       "name": "JHARSUGUDA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -114,7 +114,7 @@
     {
       "type": "district",
       "name": "KALAHANDI",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -122,7 +122,7 @@
     {
       "type": "district",
       "name": "KANDHAMAL",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -130,7 +130,7 @@
     {
       "type": "district",
       "name": "KENDRAPARHA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -138,7 +138,7 @@
     {
       "type": "district",
       "name": "KENDUJHAR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -146,7 +146,7 @@
     {
       "type": "district",
       "name": "KHORDHA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -154,7 +154,7 @@
     {
       "type": "district",
       "name": "KORAPUT",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -162,7 +162,7 @@
     {
       "type": "district",
       "name": "MALKANGIRI",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -170,7 +170,7 @@
     {
       "type": "district",
       "name": "MAYURBHANJ",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -178,7 +178,7 @@
     {
       "type": "district",
       "name": "NABARANGAPUR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -186,7 +186,7 @@
     {
       "type": "district",
       "name": "NAYAGARH",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -194,7 +194,7 @@
     {
       "type": "district",
       "name": "NUAPARHA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -202,7 +202,7 @@
     {
       "type": "district",
       "name": "PURI",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -210,7 +210,7 @@
     {
       "type": "district",
       "name": "RAYAGARHA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -218,7 +218,7 @@
     {
       "type": "district",
       "name": "SAMBALPUR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -226,7 +226,7 @@
     {
       "type": "district",
       "name": "SUBARNAPUR",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -234,7 +234,7 @@
     {
       "type": "district",
       "name": "SUNDARGARH",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""
@@ -242,7 +242,7 @@
     {
       "type": "district",
       "name": "BAUDA",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "",
       "valid_upto": ""

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-11 18:40 UTC",
+    "scraped_at": "2026-05-11 19:54 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -10,346 +10,346 @@
     {
       "type": "station",
       "name": "Angul",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Balangir",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Balasore",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bargarh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Baripada",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Boudh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bhadrak",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bhawanipatna",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bhubaneshwar AP",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Berhampur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Chandbali",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Chilika Lake",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Cuttack",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Deogarh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Dhenkanal",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Gopalpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Jagatsinghpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Jajpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Jharsuguda",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Kendrapara",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Keonjhargarh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Khordha",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Konark",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Koraput",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Malkangiri",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Nayagarh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Nowrangpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Nuapada",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Paradip Port",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Paralakhemundi",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Phulbani",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Puri",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Rayagada",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Rourkela",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Sambalpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Sonepur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Sundergarh",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Talcher",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bhubaneshwar OUAT",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Bhanjanagar",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Gunupur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Daringibadi",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     },
     {
       "type": "station",
       "name": "Anandpur",
-      "warning_color": "#008000",
+      "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-11 2200",
-      "valid_upto": "0100"
+      "issued_at": "2026-05-12 0100",
+      "valid_upto": "0400"
     }
   ]
 }
