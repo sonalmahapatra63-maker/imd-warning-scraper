@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
 
     steps:
@@ -34,7 +34,7 @@ jobs:
       # ── 4. Install Playwright + Chromium ──────────────────────────────────
       - name: Install Playwright browsers
         run: |
-          playwright install chromium --with-deps
+          python -m playwright install chromium
 
       # ── 5. Run the scraper ────────────────────────────────────────────────
       - name: Run IMD scraper
