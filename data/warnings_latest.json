@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "scraped_at": "2026-05-11 16:59 UTC",
+    "url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
+    "state_id": "10"
+  },
+  "count": 30,
+  "districts": [
+    {
+      "district": "ANUGUL",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "BALANGIR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "BALESHWAR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "BARAGARH",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "BHADRAK",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "CUTTACK",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "DEOGARH",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "DHENKANAL",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "GAJAPATHI",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "GANJAM",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "JAGATSINGHPUR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "JAJAPUR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "JHARSUGUDA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KALAHANDI",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KANDHAMAL",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KENDRAPARHA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KENDUJHAR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KHORDHA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "KORAPUT",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "MALKANGIRI",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "MAYURBHANJ",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "NABARANGAPUR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "NAYAGARH",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "NUAPARHA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "PURI",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "RAYAGARHA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "SAMBALPUR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "SUBARNAPUR",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "SUNDARGARH",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    },
+    {
+      "district": "BAUDA",
+      "warning_color": "#008000",
+      "severity": "No Warning"
+    }
+  ]
+}
