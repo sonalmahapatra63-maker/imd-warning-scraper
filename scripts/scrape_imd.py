@@ -14,6 +14,7 @@ from collections import Counter
 from datetime import datetime, timezone
 
 from bs4 import BeautifulSoup
+from supabase import create_client, Client
 
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import TimeoutError as PlaywrightTimeout
@@ -54,6 +55,13 @@ ALERT_SEVERITIES = {"Warning"}   # red only
 GMAIL_FROM    = os.getenv("GMAIL_FROM", "")          # your Gmail address
 GMAIL_PASS    = os.getenv("GMAIL_APP_PASSWORD", "")  # 16-char App Password
 EMAIL_TO      = os.getenv("ALERT_EMAIL_TO", "")      # recipient address(es), comma-separated
+
+# ── Supabase config ──────────────────────────────────────────
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://odrvhelastdyozjejqss.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")   # set via GitHub secret
+
+DISTRICT_TABLE = "district_warnings"
+STATION_TABLE  = "station_warnings"
 
 # ── Colour maps ───────────────────────────────────────────────
 # Human-readable colour name used in the CSV warning_color column
@@ -527,6 +535,65 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
 
 
 # ─────────────────────────────────────────────────────────────
+# SUPABASE UPLOAD
+# ─────────────────────────────────────────────────────────────
+
+def build_supabase_rows(records: list, meta: dict) -> list:
+    """Convert internal record dicts to flat Supabase row dicts."""
+    rows = []
+    for r in records:
+        rows.append({
+            "scraped_at":    meta["scraped_at"],
+            "state_id":      meta["state_id"],
+            "type":          r.get("type", ""),
+            "name":          r.get("name", ""),
+            "warning_color": r.get("warning_color", ""),
+            "severity":      r.get("severity", ""),
+            "issued_at":     r.get("issued_at") or None,
+            "valid_upto":    r.get("valid_upto") or None,
+        })
+    return rows
+
+
+def upload_to_supabase(district_records: list, station_records: list, meta: dict):
+    """
+    Truncate both tables and insert fresh rows on every scrape run.
+    Uses the anon/publishable key — RLS must allow DELETE + INSERT
+    (see setup instructions).
+    """
+
+    if not SUPABASE_KEY:
+        print("[scraper] SUPABASE_KEY not set — skipping Supabase upload")
+        return
+
+    try:
+        sb: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    except Exception as e:
+        print(f"[scraper] Supabase client error: {e}")
+        return
+
+    for table, records in [
+        (DISTRICT_TABLE, district_records),
+        (STATION_TABLE,  station_records),
+    ]:
+        try:
+            # Delete all existing rows first (mirrors clean_old_files for CSV)
+            sb.table(table).delete().neq("id", 0).execute()
+            print(f"[scraper] Supabase: cleared table '{table}'")
+
+            rows = build_supabase_rows(records, meta)
+
+            if rows:
+                sb.table(table).insert(rows).execute()
+                print(f"[scraper] Supabase: inserted {len(rows)} rows into '{table}'")
+            else:
+                print(f"[scraper] Supabase: no rows to insert for '{table}'")
+
+        except Exception as e:
+            print(f"[scraper] Supabase ERROR on table '{table}': {e}")
+
+
+# ─────────────────────────────────────────────────────────────
 # SAVE FUNCTIONS
 # ─────────────────────────────────────────────────────────────
 
@@ -658,6 +725,9 @@ def main():
     )
 
     append_history(all_records, meta)
+
+    # ── SUPABASE UPLOAD ───────────────────────────────────────────────────
+    upload_to_supabase(district_records, station_records, meta)
 
     # ── SEVERITY SUMMARY ──────────────────────────────────────────────────
     print("\n[scraper] Severity Summary")
