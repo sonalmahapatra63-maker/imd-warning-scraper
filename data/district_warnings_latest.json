@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-12 13:49 UTC",
+    "scraped_at": "2026-05-12 16:45 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -10,8 +10,8 @@
     {
       "type": "district",
       "name": "ANUGUL",
-      "warning_color": "green",
-      "severity": "No Warning",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -58,14 +58,22 @@
     {
       "type": "district",
       "name": "DEOGARH",
-      "warning_color": "green",
-      "severity": "No Warning",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
     {
       "type": "district",
       "name": "DHENKANAL",
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-12 1900",
+      "valid_upto": "2200"
+    },
+    {
+      "type": "district",
+      "name": "GAJAPATHI",
       "warning_color": "green",
       "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
@@ -73,17 +81,9 @@
     },
     {
       "type": "district",
-      "name": "GAJAPATHI",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-12 1900",
-      "valid_upto": "2200"
-    },
-    {
-      "type": "district",
       "name": "GANJAM",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -98,8 +98,8 @@
     {
       "type": "district",
       "name": "JAJAPUR",
-      "warning_color": "green",
-      "severity": "No Warning",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -114,16 +114,16 @@
     {
       "type": "district",
       "name": "KALAHANDI",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
     {
       "type": "district",
       "name": "KANDHAMAL",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -162,8 +162,8 @@
     {
       "type": "district",
       "name": "MALKANGIRI",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -178,8 +178,8 @@
     {
       "type": "district",
       "name": "NABARANGAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -194,8 +194,8 @@
     {
       "type": "district",
       "name": "NUAPARHA",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },
@@ -234,8 +234,8 @@
     {
       "type": "district",
       "name": "SUNDARGARH",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-12 1900",
       "valid_upto": "2200"
     },

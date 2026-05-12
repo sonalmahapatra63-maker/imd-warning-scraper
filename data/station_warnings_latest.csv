@@ -1,44 +1,44 @@
 scraped_at,state_id,type,name,warning_color,severity,issued_at,valid_upto
-2026-05-12 13:49 UTC,10,station,Angul,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Balangir,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Balasore,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bargarh,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Baripada,orange,Alert,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Boudh,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bhadrak,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bhawanipatna,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bhubaneshwar AP,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Berhampur,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Chandbali,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Chilika Lake,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Cuttack,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Deogarh,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Dhenkanal,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Gopalpur,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Jagatsinghpur,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Jajpur,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Jharsuguda,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Kendrapara,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Keonjhargarh,orange,Alert,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Khordha,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Konark,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Koraput,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Malkangiri,orange,Alert,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Nayagarh,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Nowrangpur,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Nuapada,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Paradip Port,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Paralakhemundi,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Phulbani,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Puri,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Rayagada,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Rourkela,orange,Alert,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Sambalpur,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Sonepur,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Sundergarh,orange,Alert,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Talcher,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bhubaneshwar OUAT,green,No Warning,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Bhanjanagar,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Gunupur,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Daringibadi,yellow,Watch,2026-05-12 1900,2200
-2026-05-12 13:49 UTC,10,station,Anandpur,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Angul,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Balangir,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Balasore,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bargarh,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Baripada,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Boudh,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bhadrak,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bhawanipatna,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bhubaneshwar AP,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Berhampur,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Chandbali,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Chilika Lake,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Cuttack,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Deogarh,yellow,Watch,2026-05-12 2000,2200
+2026-05-12 16:45 UTC,10,station,Dhenkanal,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Gopalpur,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Jagatsinghpur,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Jajpur,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Jharsuguda,yellow,Watch,2026-05-12 2000,2200
+2026-05-12 16:45 UTC,10,station,Kendrapara,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Keonjhargarh,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Khordha,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Konark,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Koraput,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Malkangiri,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Nayagarh,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Nowrangpur,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Nuapada,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Paradip Port,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Paralakhemundi,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Phulbani,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Puri,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Rayagada,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Rourkela,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Sambalpur,yellow,Watch,2026-05-12 2000,2200
+2026-05-12 16:45 UTC,10,station,Sonepur,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Sundergarh,orange,Alert,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Talcher,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bhubaneshwar OUAT,green,No Warning,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Bhanjanagar,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Gunupur,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Daringibadi,yellow,Watch,2026-05-12 1900,2200
+2026-05-12 16:45 UTC,10,station,Anandpur,orange,Alert,2026-05-12 1900,2200

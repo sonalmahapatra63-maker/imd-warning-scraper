@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-12 13:49 UTC",
+    "scraped_at": "2026-05-12 16:45 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -114,9 +114,9 @@
     {
       "type": "station",
       "name": "Deogarh",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-12 1900",
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-12 2000",
       "valid_upto": "2200"
     },
     {
@@ -154,9 +154,9 @@
     {
       "type": "station",
       "name": "Jharsuguda",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-12 1900",
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-12 2000",
       "valid_upto": "2200"
     },
     {
@@ -282,9 +282,9 @@
     {
       "type": "station",
       "name": "Sambalpur",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-12 1900",
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-12 2000",
       "valid_upto": "2200"
     },
     {
