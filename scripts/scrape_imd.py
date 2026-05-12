@@ -87,17 +87,14 @@ MARKER_FILENAME_TO_HEX = {
 
 
 # ─────────────────────────────────────────────────────────────
-# CLEAN OLD FILES  (keep .gitkeep & history; keep .png files)
-# FIX: .png files are excluded from deletion so they persist
-# in the data/ folder and get committed properly.
+# CLEAN OLD FILES  (keep .gitkeep, history, and PNGs)
+# PNGs are overwritten in-place by load_page() — no delete needed.
 # ─────────────────────────────────────────────────────────────
 
 def clean_old_files():
 
     print("\n[scraper] Cleaning old files...")
 
-    # NOTE: removed "*.png" from patterns — PNGs are overwritten
-    # in-place by load_page() so they don't need to be deleted first.
     patterns = ["*.html", "*.csv", "*.json"]
 
     keep_files = {".gitkeep", "warnings_history.jsonl"}
@@ -193,9 +190,8 @@ def parse_station_aria_label(aria_label: str):
 
 # ─────────────────────────────────────────────────────────────
 # PAGE LOADER
-# FIX: screenshot path is fixed (no timestamp) so the same file
-# gets overwritten each run → git always sees a changed .png
-# and commits it.
+# Screenshot uses a fixed filename so it is overwritten each run
+# (git always sees it as changed and commits it).
 # ─────────────────────────────────────────────────────────────
 
 def load_page(url: str, screenshot_name: str):
@@ -461,49 +457,120 @@ def check_alerts(district_records: list, station_records: list) -> dict:
 # EMAIL
 # ─────────────────────────────────────────────────────────────
 
-def build_email_body(alert_info: dict, timestamp_human: str) -> str:
+def _alert_rows_to_html_table(records: list, title: str) -> str:
+    """Render a list of alert records as a styled HTML table section."""
+    if not records:
+        return ""
 
+    COLOR_BADGE = {
+        "red":    ("#ff0000", "#fff"),
+        "orange": ("#ffa500", "#000"),
+        "yellow": ("#ffff00", "#000"),
+        "green":  ("#008000", "#fff"),
+    }
+
+    rows_html = ""
+    for r in records:
+        bg, fg = COLOR_BADGE.get(r.get("warning_color", "").lower(), ("#cccccc", "#000"))
+        badge = (
+            f'<span style="background:{bg};color:{fg};padding:2px 8px;'
+            f'border-radius:4px;font-weight:bold;font-size:12px;">'
+            f'{r["severity"].upper()}</span>'
+        )
+        rows_html += (
+            f"<tr>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r['name']}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;text-align:center;'>{badge}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('issued_at','—')}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('valid_upto','—')} Hrs</td>"
+            f"</tr>"
+        )
+
+    return f"""
+    <h3 style="margin:16px 0 6px;color:#b30000;">{title}</h3>
+    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">
+      <thead>
+        <tr style="background:#1B3A6B;color:#fff;">
+          <th style="padding:7px 10px;text-align:left;">Name</th>
+          <th style="padding:7px 10px;">Severity</th>
+          <th style="padding:7px 10px;text-align:left;">Issued At</th>
+          <th style="padding:7px 10px;text-align:left;">Valid Upto</th>
+        </tr>
+      </thead>
+      <tbody>{rows_html}</tbody>
+    </table>"""
+
+
+def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
     lines = [
         f"IMD Warning Alert — {timestamp_human}",
         "=" * 60,
         "",
-        "⚠️  The following high-severity warnings were detected:",
+        "⚠️  High-severity warnings detected:",
         "",
     ]
-
-    if alert_info["districts"]:
-        lines.append("DISTRICT ALERTS")
-        lines.append("-" * 40)
-        for r in alert_info["districts"]:
-            lines.append(
-                f"  • {r['name']}  |  {r['severity'].upper()} ({r['warning_color']})"
-            )
-            if r.get("issued_at"):
-                lines.append(f"    Issued at : {r['issued_at']}")
-            if r.get("valid_upto"):
-                lines.append(f"    Valid upto: {r['valid_upto']} Hrs")
-        lines.append("")
-
-    if alert_info["stations"]:
-        lines.append("STATION ALERTS")
-        lines.append("-" * 40)
-        for r in alert_info["stations"]:
-            lines.append(
-                f"  • {r['name']}  |  {r['severity'].upper()} ({r['warning_color']})"
-            )
-            if r.get("issued_at"):
-                lines.append(f"    Issued at : {r['issued_at']}")
-            if r.get("valid_upto"):
-                lines.append(f"    Valid upto: {r['valid_upto']} Hrs")
-        lines.append("")
-
+    for section_label, section_records in [
+        ("DISTRICT ALERTS", alert_info["districts"]),
+        ("STATION ALERTS",  alert_info["stations"]),
+    ]:
+        if section_records:
+            lines.append(section_label)
+            lines.append("-" * 40)
+            for r in section_records:
+                lines.append(
+                    f"  • {r['name']}  |  {r['severity'].upper()} ({r['warning_color']})"
+                )
+                if r.get("issued_at"):
+                    lines.append(f"    Issued at : {r['issued_at']}")
+                if r.get("valid_upto"):
+                    lines.append(f"    Valid upto: {r['valid_upto']} Hrs")
+            lines.append("")
     lines += [
         "=" * 60,
         "Source: IMD Nowcast Warning system",
         "Scraped automatically by GitHub Actions.",
+        "Attachments: district map PNG, station map PNG, warnings_latest.csv",
     ]
-
     return "\n".join(lines)
+
+
+def build_email_html(alert_info: dict, timestamp_human: str) -> str:
+    district_table = _alert_rows_to_html_table(alert_info["districts"], "🗺️ District Alerts")
+    station_table  = _alert_rows_to_html_table(alert_info["stations"],  "📍 Station Alerts")
+
+    return f"""<!DOCTYPE html>
+<html>
+<body style="font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:0;">
+  <div style="max-width:680px;margin:20px auto;background:#fff;border-radius:8px;
+              box-shadow:0 2px 8px rgba(0,0,0,.12);overflow:hidden;">
+
+    <!-- Header -->
+    <div style="background:#b30000;padding:18px 24px;">
+      <h2 style="margin:0;color:#fff;font-size:18px;">
+        🚨 IMD HIGH ALERT &nbsp;—&nbsp; {timestamp_human}
+      </h2>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:20px 24px;">
+      <p style="margin:0 0 12px;color:#333;">
+        High-severity weather warnings have been detected for monitored locations
+        in Odisha. Details are shown below and full data is attached as CSV.
+      </p>
+
+      {district_table}
+      {station_table}
+
+      <hr style="margin:24px 0;border:none;border-top:1px solid #eee;">
+      <p style="font-size:11px;color:#888;margin:0;">
+        Source: IMD Nowcast Warning system &nbsp;|&nbsp;
+        Scraped automatically by GitHub Actions.<br>
+        Attachments: district map PNG &bull; station map PNG &bull; warnings_latest.csv
+      </p>
+    </div>
+  </div>
+</body>
+</html>"""
 
 
 def send_alert_email(alert_info: dict, timestamp_human: str):
@@ -515,34 +582,39 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
     recipients = [addr.strip() for addr in EMAIL_TO.split(",") if addr.strip()]
 
     subject = f"🚨 IMD HIGH ALERT — {timestamp_human}"
-    body    = build_email_body(alert_info, timestamp_human)
 
-    msg = MIMEMultipart()
+    # ── Build multipart/alternative message (plain + HTML) ───────────────
+    msg = MIMEMultipart("mixed")
     msg["From"]    = GMAIL_FROM
     msg["To"]      = ", ".join(recipients)
     msg["Subject"] = subject
 
-    msg.attach(MIMEText(body, "plain"))
+    alt_part = MIMEMultipart("alternative")
+    alt_part.attach(MIMEText(build_email_plain(alert_info, timestamp_human), "plain"))
+    alt_part.attach(MIMEText(build_email_html(alert_info, timestamp_human),  "html"))
+    msg.attach(alt_part)
 
-    png_files = [
+    # ── Attachments: 2 PNGs + warnings_latest.csv ────────────────────────
+    attachments = [
         DATA_DIR / f"district_warning_{STATE_ID}.png",
         DATA_DIR / f"station_warning_{STATE_ID}.png",
+        DATA_DIR / "warnings_latest.csv",
     ]
 
-    for png_path in png_files:
-        if png_path.exists():
-            with open(png_path, "rb") as f:
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(f.read())
-            encoders.encode_base64(part)
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename={png_path.name}",
-            )
-            msg.attach(part)
-            print(f"[scraper] Attached: {png_path.name}")
-        else:
-            print(f"[scraper] Screenshot not found (skipping attachment): {png_path.name}")
+    for attach_path in attachments:
+        if not attach_path.exists():
+            print(f"[scraper] Attachment not found (skipping): {attach_path.name}")
+            continue
+        with open(attach_path, "rb") as f:
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(f.read())
+        encoders.encode_base64(part)
+        part.add_header(
+            "Content-Disposition",
+            f'attachment; filename="{attach_path.name}"',
+        )
+        msg.attach(part)
+        print(f"[scraper] Attached: {attach_path.name}")
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
@@ -555,9 +627,8 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
 
 # ─────────────────────────────────────────────────────────────
 # SUPABASE UPLOAD
-# FIX: switched from delete-then-insert to INSERT only (append).
-# Every run appends fresh rows — full history is preserved.
-# The delete .neq("id", 0) bug (UUID vs int mismatch) is gone.
+# Clears both tables (state_id-scoped) then inserts fresh rows.
+# Tables always reflect the current IMD snapshot.
 # ─────────────────────────────────────────────────────────────
 
 def build_supabase_rows(records: list, meta: dict) -> list:
@@ -578,10 +649,9 @@ def build_supabase_rows(records: list, meta: dict) -> list:
 
 def upload_to_supabase(district_records: list, station_records: list, meta: dict):
     """
-    Append rows to Supabase on every run — full history is kept.
-    No delete step: avoids the UUID/int mismatch bug and RLS issues.
-    Supabase tables must NOT have unique constraints that would
-    block duplicate (scraped_at, name) combinations.
+    Clear both tables, then insert fresh rows for this scrape run.
+    Each run represents the current live IMD snapshot — no stale rows.
+    Requires DELETE permission on both tables in Supabase RLS policy.
     """
 
     if not SUPABASE_KEY:
@@ -599,18 +669,24 @@ def upload_to_supabase(district_records: list, station_records: list, meta: dict
         (STATION_TABLE,  station_records),
     ]:
         try:
+            # ── Step 1: Clear existing rows ───────────────────────────────
+            # Filter on state_id so only this state's rows are removed;
+            # safe to run even if table is already empty.
+            sb.table(table).delete().eq("state_id", STATE_ID).execute()
+            print(f"[scraper] Supabase: cleared existing rows in '{table}' for state_id={STATE_ID}")
+
+            # ── Step 2: Insert fresh rows ─────────────────────────────────
             rows = build_supabase_rows(records, meta)
 
             if not rows:
                 print(f"[scraper] Supabase: no rows to insert for '{table}'")
                 continue
 
-            # Insert in batches of 100 to stay within request limits
             batch_size = 100
             total_inserted = 0
             for i in range(0, len(rows), batch_size):
                 batch = rows[i:i + batch_size]
-                result = sb.table(table).insert(batch).execute()
+                sb.table(table).insert(batch).execute()
                 total_inserted += len(batch)
 
             print(f"[scraper] Supabase: inserted {total_inserted} rows into '{table}'")
@@ -746,7 +822,7 @@ def main():
 
     append_history(all_records, meta)
 
-    # ── SUPABASE UPLOAD (append — full history kept) ──────────────────────
+    # ── SUPABASE UPLOAD (clear + insert fresh snapshot) ──────────────────
     upload_to_supabase(district_records, station_records, meta)
 
     # ── SEVERITY SUMMARY ──────────────────────────────────────────────────
