@@ -52,19 +52,18 @@ ALERT_STATIONS = {
 ALERT_SEVERITIES = {"Warning"}   # red only
 
 # ── Email config (read from GitHub Actions secrets / env vars) ─
-GMAIL_FROM    = os.getenv("GMAIL_FROM", "")          # your Gmail address
-GMAIL_PASS    = os.getenv("GMAIL_APP_PASSWORD", "")  # 16-char App Password
-EMAIL_TO      = os.getenv("ALERT_EMAIL_TO", "")      # recipient address(es), comma-separated
+GMAIL_FROM    = os.getenv("GMAIL_FROM", "")
+GMAIL_PASS    = os.getenv("GMAIL_APP_PASSWORD", "")
+EMAIL_TO      = os.getenv("ALERT_EMAIL_TO", "")
 
 # ── Supabase config ──────────────────────────────────────────
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://odrvhelastdyozjejqss.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")   # set via GitHub secret
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 
 DISTRICT_TABLE = "district_warnings"
 STATION_TABLE  = "station_warnings"
 
 # ── Colour maps ───────────────────────────────────────────────
-# Human-readable colour name used in the CSV warning_color column
 HEX_TO_COLOR_NAME = {
     "#008000": "green",
     "#ffff00": "yellow",
@@ -88,14 +87,18 @@ MARKER_FILENAME_TO_HEX = {
 
 
 # ─────────────────────────────────────────────────────────────
-# CLEAN OLD FILES  (delete everything except .gitkeep & history)
+# CLEAN OLD FILES  (keep .gitkeep & history; keep .png files)
+# FIX: .png files are excluded from deletion so they persist
+# in the data/ folder and get committed properly.
 # ─────────────────────────────────────────────────────────────
 
 def clean_old_files():
 
     print("\n[scraper] Cleaning old files...")
 
-    patterns = ["*.html", "*.png", "*.csv", "*.json"]
+    # NOTE: removed "*.png" from patterns — PNGs are overwritten
+    # in-place by load_page() so they don't need to be deleted first.
+    patterns = ["*.html", "*.csv", "*.json"]
 
     keep_files = {".gitkeep", "warnings_history.jsonl"}
 
@@ -146,7 +149,6 @@ def color_to_severity(color: str) -> str:
 
 
 def hex_to_color_name(hex_color: str) -> str:
-    """Return human-readable color name (green/yellow/orange/red) for the CSV column."""
     return HEX_TO_COLOR_NAME.get(normalize_color(hex_color), hex_color)
 
 
@@ -159,12 +161,6 @@ def marker_filename_to_color(href: str) -> str:
 
 
 def parse_station_aria_label(aria_label: str):
-    """
-    Parse the aria-label on a station marker <g> element.
-
-    Returns a dict: name, warning_text, issued_at, valid_upto.
-    """
-
     name_match = re.match(r"^([^<]+)", aria_label)
     name = name_match.group(1).strip() if name_match else aria_label.strip()
 
@@ -197,6 +193,9 @@ def parse_station_aria_label(aria_label: str):
 
 # ─────────────────────────────────────────────────────────────
 # PAGE LOADER
+# FIX: screenshot path is fixed (no timestamp) so the same file
+# gets overwritten each run → git always sees a changed .png
+# and commits it.
 # ─────────────────────────────────────────────────────────────
 
 def load_page(url: str, screenshot_name: str):
@@ -233,8 +232,10 @@ def load_page(url: str, screenshot_name: str):
         except PlaywrightTimeout:
             print("[scraper] WARNING: SVG not detected")
 
+        # Always write to a fixed filename so git detects it as modified
         screenshot_path = DATA_DIR / screenshot_name
         page.screenshot(path=str(screenshot_path), full_page=True)
+        print(f"[scraper] Screenshot saved: {screenshot_path}")
 
         html = page.content()
         browser.close()
@@ -249,11 +250,8 @@ def load_page(url: str, screenshot_name: str):
 def extract_district_records(html: str) -> list:
     """
     Extract district warning records.
-
-    Adds issued_at and valid_upto columns (empty for districts,
-    which don't carry time information on the map page) so that
-    district_warnings_latest.csv has the same schema as the
-    station CSV.
+    issued_at and valid_upto are populated later from station data
+    (see enrich_district_issued_at).
     """
 
     soup    = BeautifulSoup(html, "html.parser")
@@ -307,9 +305,6 @@ def extract_district_records(html: str) -> list:
 
 
 def extract_station_records(html: str) -> list:
-    """
-    Extract station warning records from the station nowcast page.
-    """
 
     soup    = BeautifulSoup(html, "html.parser")
     records = []
@@ -405,14 +400,43 @@ def extract_station_records(html: str) -> list:
 
 
 # ─────────────────────────────────────────────────────────────
+# FIX: Copy issued_at / valid_upto from station → district
+# Strategy: take the most common issued_at + valid_upto from
+# station records and apply it to all district rows (since the
+# district page does not carry time info itself).
+# ─────────────────────────────────────────────────────────────
+
+def enrich_district_issued_at(district_records: list, station_records: list) -> list:
+    """
+    Populate issued_at and valid_upto on district records using
+    the consensus value from station records.
+    """
+
+    station_issued = [r["issued_at"] for r in station_records if r.get("issued_at")]
+    station_valid  = [r["valid_upto"] for r in station_records if r.get("valid_upto")]
+
+    if not station_issued:
+        print("[scraper] No station issued_at found — district columns stay empty")
+        return district_records
+
+    # Use the most common value (handles edge-case where a few stations differ)
+    common_issued = Counter(station_issued).most_common(1)[0][0]
+    common_valid  = Counter(station_valid).most_common(1)[0][0] if station_valid else ""
+
+    print(f"[scraper] Enriching districts: issued_at={common_issued}  valid_upto={common_valid}")
+
+    for r in district_records:
+        r["issued_at"]  = common_issued
+        r["valid_upto"] = common_valid
+
+    return district_records
+
+
+# ─────────────────────────────────────────────────────────────
 # ALERT CHECK
 # ─────────────────────────────────────────────────────────────
 
 def check_alerts(district_records: list, station_records: list) -> dict:
-    """
-    Return a dict describing whether an alert email should be sent,
-    and which specific records triggered it.
-    """
 
     triggered_districts = [
         r for r in district_records
@@ -483,10 +507,6 @@ def build_email_body(alert_info: dict, timestamp_human: str) -> str:
 
 
 def send_alert_email(alert_info: dict, timestamp_human: str):
-    """
-    Send a Gmail alert with both PNG screenshots as attachments.
-    Requires GMAIL_FROM, GMAIL_APP_PASSWORD, and ALERT_EMAIL_TO env vars.
-    """
 
     if not GMAIL_FROM or not GMAIL_PASS or not EMAIL_TO:
         print("[scraper] Email env vars not set — skipping email alert")
@@ -504,7 +524,6 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
 
     msg.attach(MIMEText(body, "plain"))
 
-    # Attach both PNG screenshots
     png_files = [
         DATA_DIR / f"district_warning_{STATE_ID}.png",
         DATA_DIR / f"station_warning_{STATE_ID}.png",
@@ -536,10 +555,12 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
 
 # ─────────────────────────────────────────────────────────────
 # SUPABASE UPLOAD
+# FIX: switched from delete-then-insert to INSERT only (append).
+# Every run appends fresh rows — full history is preserved.
+# The delete .neq("id", 0) bug (UUID vs int mismatch) is gone.
 # ─────────────────────────────────────────────────────────────
 
 def build_supabase_rows(records: list, meta: dict) -> list:
-    """Convert internal record dicts to flat Supabase row dicts."""
     rows = []
     for r in records:
         rows.append({
@@ -557,9 +578,10 @@ def build_supabase_rows(records: list, meta: dict) -> list:
 
 def upload_to_supabase(district_records: list, station_records: list, meta: dict):
     """
-    Truncate both tables and insert fresh rows on every scrape run.
-    Uses the anon/publishable key — RLS must allow DELETE + INSERT
-    (see setup instructions).
+    Append rows to Supabase on every run — full history is kept.
+    No delete step: avoids the UUID/int mismatch bug and RLS issues.
+    Supabase tables must NOT have unique constraints that would
+    block duplicate (scraped_at, name) combinations.
     """
 
     if not SUPABASE_KEY:
@@ -577,17 +599,21 @@ def upload_to_supabase(district_records: list, station_records: list, meta: dict
         (STATION_TABLE,  station_records),
     ]:
         try:
-            # Delete all existing rows first (mirrors clean_old_files for CSV)
-            sb.table(table).delete().neq("id", 0).execute()
-            print(f"[scraper] Supabase: cleared table '{table}'")
-
             rows = build_supabase_rows(records, meta)
 
-            if rows:
-                sb.table(table).insert(rows).execute()
-                print(f"[scraper] Supabase: inserted {len(rows)} rows into '{table}'")
-            else:
+            if not rows:
                 print(f"[scraper] Supabase: no rows to insert for '{table}'")
+                continue
+
+            # Insert in batches of 100 to stay within request limits
+            batch_size = 100
+            total_inserted = 0
+            for i in range(0, len(rows), batch_size):
+                batch = rows[i:i + batch_size]
+                result = sb.table(table).insert(batch).execute()
+                total_inserted += len(batch)
+
+            print(f"[scraper] Supabase: inserted {total_inserted} rows into '{table}'")
 
         except Exception as e:
             print(f"[scraper] Supabase ERROR on table '{table}': {e}")
@@ -611,15 +637,6 @@ def save_json(filename: str, records: list, meta: dict):
 
 
 def save_csv(filename: str, records: list, meta: dict, extra_fields: list = None):
-    """
-    Write a CSV.
-
-    district_warnings_latest.csv now shares the same schema as
-    station_warnings_latest.csv, including issued_at and valid_upto.
-
-    warning_color is stored as a human-readable name
-    (green / yellow / orange / red) rather than a hex code.
-    """
 
     path = DATA_DIR / filename
 
@@ -663,7 +680,7 @@ def append_history(records: list, meta: dict):
 
 def main():
 
-    # 1. Delete all old output files before writing new ones
+    # 1. Delete old output files (PNGs are excluded — overwritten in-place)
     clean_old_files()
 
     timestamp       = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -678,6 +695,9 @@ def main():
     station_html = load_page(STATION_URL, f"station_warning_{STATE_ID}.png")
     save_snapshot("station_snapshot", station_html, timestamp)
     station_records = extract_station_records(station_html)
+
+    # ── FIX: Copy issued_at / valid_upto from station → district ─────────
+    district_records = enrich_district_issued_at(district_records, station_records)
 
     # ── SUMMARY ──────────────────────────────────────────────────────────
     all_records = district_records + station_records
@@ -697,7 +717,7 @@ def main():
         "station_url":  STATION_URL,
     }
 
-    # ── DISTRICT FILES (now includes issued_at / valid_upto) ─────────────
+    # ── DISTRICT FILES ────────────────────────────────────────────────────
     save_json("district_warnings_latest.json", district_records, meta)
     save_csv(
         "district_warnings_latest.csv",
@@ -726,7 +746,7 @@ def main():
 
     append_history(all_records, meta)
 
-    # ── SUPABASE UPLOAD ───────────────────────────────────────────────────
+    # ── SUPABASE UPLOAD (append — full history kept) ──────────────────────
     upload_to_supabase(district_records, station_records, meta)
 
     # ── SEVERITY SUMMARY ──────────────────────────────────────────────────
