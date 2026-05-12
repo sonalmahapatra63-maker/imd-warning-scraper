@@ -68,5 +68,6 @@ jobs:
           path: |
             data/*.html
             data/*.png
+            data/*.csv
           retention-days: 3
           if-no-files-found: ignore
