@@ -49,7 +49,7 @@ ALERT_STATIONS = {
     "Bhubaneshwar OUAT",
 }
 
-ALERT_SEVERITIES = {"No Warning"}   # red only
+ALERT_SEVERITIES = {"Warning"}   # red only
 
 # ── Email config (read from GitHub Actions secrets / env vars) ─
 GMAIL_FROM    = os.getenv("GMAIL_FROM", "")
