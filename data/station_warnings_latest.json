@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-13 17:47 UTC",
+    "scraped_at": "2026-05-13 18:48 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -13,7 +13,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -21,7 +24,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -29,7 +35,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -37,7 +46,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -45,7 +57,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -53,7 +68,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -61,7 +79,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -69,7 +90,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -77,7 +101,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2241",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -85,7 +112,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -93,7 +123,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -101,7 +134,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -109,7 +145,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -117,7 +156,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -125,7 +167,10 @@
       "warning_color": "red",
       "severity": "Warning",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Heavy rain: > 15 mm/hr",
+      "thunderstorm_desc": "Severe Thunderstorms with maximum surface wind speed 62 -87 kmph (In gusts)",
+      "lightning_probability": "High cloud to ground Lightning probability ( > 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -133,7 +178,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -141,7 +189,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -149,7 +200,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -157,7 +211,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -165,7 +222,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -173,7 +233,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -181,7 +244,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2241",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -189,7 +255,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -197,7 +266,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -205,7 +277,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -213,7 +288,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -221,7 +299,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -229,7 +310,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -237,7 +321,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -245,7 +332,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -253,7 +343,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -261,7 +354,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -269,7 +365,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -277,7 +376,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -285,7 +387,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -293,7 +398,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -301,7 +409,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -309,7 +420,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -317,7 +431,10 @@
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 2241",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Moderate rain: 5-15 mm/hr",
+      "thunderstorm_desc": "Moderate Thunderstorms with maximum surface wind speed between 41 – 61 kmph (In gusts)",
+      "lightning_probability": "Moderate cloud to ground Lightning probability (30 - 60% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -325,7 +442,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -333,7 +453,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -341,7 +464,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
@@ -349,7 +475,10 @@
       "warning_color": "yellow",
       "severity": "Watch",
       "issued_at": "2026-05-13 2200",
-      "valid_upto": "0100"
+      "valid_upto": "0100",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     }
   ]
 }
