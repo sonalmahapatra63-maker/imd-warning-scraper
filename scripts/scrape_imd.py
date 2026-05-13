@@ -663,7 +663,7 @@ def _build_trigger_footer_html() -> str:
         <tr style="padding:4px 8px;font-size:12px;">
           <td style="{lbl_style}">Scan schedule (IST)</td>
           <td style="font-size:12px;color:#555;">
-            {scan_times_str} Hrs &nbsp;via GitHub Actions (triggered by Google Apps Script)
+            {scan_times_str} Hrs &nbsp;via GitHub Actions
           </td>
         </tr>
       </table>
