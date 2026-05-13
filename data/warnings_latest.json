@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-13 13:45 UTC",
+    "scraped_at": "2026-05-13 16:45 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -18,8 +18,8 @@
     {
       "type": "district",
       "name": "BALANGIR",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -34,6 +34,14 @@
     {
       "type": "district",
       "name": "BARAGARH",
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-13 1900",
+      "valid_upto": "2200"
+    },
+    {
+      "type": "district",
+      "name": "BHADRAK",
       "warning_color": "orange",
       "severity": "Alert",
       "issued_at": "2026-05-13 1900",
@@ -41,17 +49,9 @@
     },
     {
       "type": "district",
-      "name": "BHADRAK",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
-    },
-    {
-      "type": "district",
       "name": "CUTTACK",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -66,8 +66,8 @@
     {
       "type": "district",
       "name": "DHENKANAL",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "red",
+      "severity": "Warning",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -98,16 +98,16 @@
     {
       "type": "district",
       "name": "JAJAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
     {
       "type": "district",
       "name": "JHARSUGUDA",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -138,8 +138,8 @@
     {
       "type": "district",
       "name": "KENDUJHAR",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -170,8 +170,8 @@
     {
       "type": "district",
       "name": "MAYURBHANJ",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -186,16 +186,16 @@
     {
       "type": "district",
       "name": "NAYAGARH",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
     {
       "type": "district",
       "name": "NUAPARHA",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -234,8 +234,8 @@
     {
       "type": "district",
       "name": "SUNDARGARH",
-      "warning_color": "orange",
-      "severity": "Alert",
+      "warning_color": "yellow",
+      "severity": "Watch",
       "issued_at": "2026-05-13 1900",
       "valid_upto": "2200"
     },
@@ -298,10 +298,10 @@
     {
       "type": "station",
       "name": "Bhadrak",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -330,10 +330,10 @@
     {
       "type": "station",
       "name": "Chandbali",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -346,10 +346,10 @@
     {
       "type": "station",
       "name": "Cuttack",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -362,10 +362,10 @@
     {
       "type": "station",
       "name": "Dhenkanal",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "red",
+      "severity": "Warning",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -386,10 +386,10 @@
     {
       "type": "station",
       "name": "Jajpur",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -450,10 +450,10 @@
     {
       "type": "station",
       "name": "Nayagarh",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
-      "valid_upto": "2200"
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 2200",
+      "valid_upto": "0100"
     },
     {
       "type": "station",
@@ -522,9 +522,9 @@
     {
       "type": "station",
       "name": "Sambalpur",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-13 1900",
+      "warning_color": "orange",
+      "severity": "Alert",
+      "issued_at": "2026-05-13 1942",
       "valid_upto": "2200"
     },
     {
