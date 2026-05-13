@@ -40,8 +40,10 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── Alert thresholds ──────────────────────────────────────────
-ALERT_DISTRICT = "KHORDHA"
+# Districts that trigger an email on Alert or Warning
+ALERT_DISTRICTS = {"KHORDHA", "CUTTACK"}
 
+# Stations that trigger an email (with their own severity thresholds below)
 ALERT_STATIONS = {
     "Bhubaneshwar AP",
     "Cuttack",
@@ -49,7 +51,15 @@ ALERT_STATIONS = {
     "Bhubaneshwar OUAT",
 }
 
-ALERT_SEVERITIES = {"Warning"}   # red only
+# Severity levels that trigger an email for districts
+ALERT_SEVERITIES_DISTRICT = {"Alert", "Warning"}   # orange + red
+
+# Bhubaneshwar AP / OUAT also trigger on Watch (yellow)
+ALERT_STATIONS_WATCH = {"Bhubaneshwar AP", "Bhubaneshwar OUAT"}
+ALERT_SEVERITIES_STATION_WATCH = {"Watch", "Alert", "Warning"}  # yellow + orange + red
+
+# All other stations (Cuttack, Khordha) trigger on Alert / Warning only
+ALERT_SEVERITIES_STATION = {"Alert", "Warning"}    # orange + red
 
 # ── Email config (read from GitHub Actions secrets / env vars) ─
 GMAIL_FROM    = os.getenv("GMAIL_FROM", "")
@@ -434,16 +444,28 @@ def enrich_district_issued_at(district_records: list, station_records: list) -> 
 
 def check_alerts(district_records: list, station_records: list) -> dict:
 
+    # KHORDHA or CUTTACK at Alert / Warning level
     triggered_districts = [
         r for r in district_records
-        if r["name"].upper() == ALERT_DISTRICT
-        and r["severity"] in ALERT_SEVERITIES
+        if r["name"].upper() in ALERT_DISTRICTS
+        and r["severity"] in ALERT_SEVERITIES_DISTRICT
     ]
 
+    # Bhubaneshwar AP / OUAT: Watch + Alert + Warning
+    # Cuttack / Khordha stations: Alert + Warning only
     triggered_stations = [
         r for r in station_records
         if r["name"] in ALERT_STATIONS
-        and r["severity"] in ALERT_SEVERITIES
+        and (
+            (
+                r["name"] in ALERT_STATIONS_WATCH
+                and r["severity"] in ALERT_SEVERITIES_STATION_WATCH
+            )
+            or (
+                r["name"] not in ALERT_STATIONS_WATCH
+                and r["severity"] in ALERT_SEVERITIES_STATION
+            )
+        )
     ]
 
     return {
@@ -529,7 +551,7 @@ def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
         "=" * 60,
         "Source: IMD Nowcast Warning system",
         "Scraped automatically by GitHub Actions.",
-        "Attachments: district map PNG, station map PNG, warnings_latest.csv",
+        "Attachments: district map PNG, station map PNG",
     ]
     return "\n".join(lines)
 
@@ -555,7 +577,7 @@ def build_email_html(alert_info: dict, timestamp_human: str) -> str:
     <div style="padding:20px 24px;">
       <p style="margin:0 0 12px;color:#333;">
         High-severity weather warnings have been detected for monitored locations
-        in Odisha. Details are shown below and full data is attached as CSV.
+        in Odisha. Details are shown below.
       </p>
 
       {district_table}
@@ -565,7 +587,7 @@ def build_email_html(alert_info: dict, timestamp_human: str) -> str:
       <p style="font-size:11px;color:#888;margin:0;">
         Source: IMD Nowcast Warning system &nbsp;|&nbsp;
         Scraped automatically by GitHub Actions.<br>
-        Attachments: district map PNG &bull; station map PNG &bull; warnings_latest.csv
+        Attachments: district map PNG &bull; station map PNG
       </p>
     </div>
   </div>
@@ -594,11 +616,10 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
     alt_part.attach(MIMEText(build_email_html(alert_info, timestamp_human),  "html"))
     msg.attach(alt_part)
 
-    # ── Attachments: 2 PNGs + warnings_latest.csv ────────────────────────
+    # ── Attachments: 2 PNGs only ─────────────────────────────────────────
     attachments = [
         DATA_DIR / f"district_warning_{STATE_ID}.png",
         DATA_DIR / f"station_warning_{STATE_ID}.png",
-        DATA_DIR / "warnings_latest.csv",
     ]
 
     for attach_path in attachments:
