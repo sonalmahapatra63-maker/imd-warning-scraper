@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-13 19:45 UTC",
+    "scraped_at": "2026-05-13 22:45 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -26,8 +26,8 @@
     {
       "type": "district",
       "name": "BALESHWAR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -42,16 +42,16 @@
     {
       "type": "district",
       "name": "BHADRAK",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "CUTTACK",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -66,8 +66,8 @@
     {
       "type": "district",
       "name": "DHENKANAL",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -90,16 +90,16 @@
     {
       "type": "district",
       "name": "JAGATSINGHPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "JAJAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -130,24 +130,24 @@
     {
       "type": "district",
       "name": "KENDRAPARHA",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "KENDUJHAR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "KHORDHA",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -170,16 +170,16 @@
     {
       "type": "district",
       "name": "MAYURBHANJ",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "NABARANGAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -194,16 +194,16 @@
     {
       "type": "district",
       "name": "NUAPARHA",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "orange",
+      "severity": "Alert",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
     {
       "type": "district",
       "name": "PURI",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -226,8 +226,8 @@
     {
       "type": "district",
       "name": "SUBARNAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     },
@@ -242,8 +242,8 @@
     {
       "type": "district",
       "name": "BAUDA",
-      "warning_color": "yellow",
-      "severity": "Watch",
+      "warning_color": "green",
+      "severity": "No Warning",
       "issued_at": "2026-05-13 2200",
       "valid_upto": "0100"
     }
