@@ -521,10 +521,9 @@ def check_alerts(district_records: list, station_records: list) -> dict:
 # ─────────────────────────────────────────────────────────────
 
 def _alert_rows_to_html_table(records: list, title: str, is_station: bool = False) -> str:
-    """Render a list of alert records as a styled HTML table section.
-
-    For station records (is_station=True) an extra detail sub-row is
-    appended below each station showing rain / thunderstorm / lightning data.
+    """Render a list of alert records as a 4-column styled HTML table section.
+    Columns: Name | Severity | Issued At | Valid Upto  (same layout for both
+    district and station tables).
     """
     if not records:
         return ""
@@ -536,8 +535,6 @@ def _alert_rows_to_html_table(records: list, title: str, is_station: bool = Fals
         "green":  ("#008000", "#fff"),
     }
 
-    col_count = 5 if is_station else 4   # extra "Details" column for stations
-
     rows_html = ""
     for r in records:
         bg, fg = COLOR_BADGE.get(r.get("warning_color", "").lower(), ("#cccccc", "#000"))
@@ -546,46 +543,14 @@ def _alert_rows_to_html_table(records: list, title: str, is_station: bool = Fals
             f'border-radius:4px;font-weight:bold;font-size:12px;">'
             f'{r["severity"].upper()}</span>'
         )
-
-        # ── Main data row ────────────────────────────────────────────────
-        if is_station:
-            # Build a compact detail string from the three new fields
-            detail_parts = []
-            rain  = (r.get("rain_description") or "").strip()
-            tstm  = (r.get("thunderstorm_desc") or "").strip()
-            light = (r.get("lightning_probability") or "").strip()
-            if rain:
-                detail_parts.append(f"🌧️ {rain}")
-            if tstm:
-                detail_parts.append(f"⛈️ {tstm}")
-            if light:
-                detail_parts.append(f"⚡ {light}")
-            detail_html = "<br>".join(detail_parts) if detail_parts else "—"
-
-            rows_html += (
-                f"<tr>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;text-align:center;'>{badge}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('issued_at','—')}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('valid_upto','—')} Hrs</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;color:#444;line-height:1.5;'>{detail_html}</td>"
-                f"</tr>"
-            )
-        else:
-            rows_html += (
-                f"<tr>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;text-align:center;'>{badge}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('issued_at','—')}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('valid_upto','—')} Hrs</td>"
-                f"</tr>"
-            )
-
-    # ── Extra header column for stations ────────────────────────────────
-    extra_th = (
-        "<th style='padding:7px 10px;text-align:left;'>Details (Rain / Storm / Lightning)</th>"
-        if is_station else ""
-    )
+        rows_html += (
+            f"<tr>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;text-align:center;'>{badge}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('issued_at', '—')}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('valid_upto', '—')} Hrs</td>"
+            f"</tr>"
+        )
 
     return f"""
     <h3 style="margin:16px 0 6px;color:#b30000;">{title}</h3>
@@ -596,7 +561,48 @@ def _alert_rows_to_html_table(records: list, title: str, is_station: bool = Fals
           <th style="padding:7px 10px;">Severity</th>
           <th style="padding:7px 10px;text-align:left;">Issued At</th>
           <th style="padding:7px 10px;text-align:left;">Valid Upto</th>
-          {extra_th}
+        </tr>
+      </thead>
+      <tbody>{rows_html}</tbody>
+    </table>"""
+
+
+def _station_details_html_table(records: list) -> str:
+    """Render a separate 4-column table for station weather details.
+    Columns: Station Name | Rain | Storm | Lightning
+    Only rendered when at least one station has detail data.
+    """
+    # Filter to stations that have at least one detail field populated
+    detail_records = [
+        r for r in records
+        if r.get("rain_description") or r.get("thunderstorm_desc") or r.get("lightning_probability")
+    ]
+    if not detail_records:
+        return ""
+
+    rows_html = ""
+    for r in detail_records:
+        rain  = (r.get("rain_description")      or "—").strip()
+        storm = (r.get("thunderstorm_desc")      or "—").strip()
+        light = (r.get("lightning_probability")  or "—").strip()
+        rows_html += (
+            f"<tr>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>🌧️ {rain}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>⛈️ {storm}</td>"
+            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>⚡ {light}</td>"
+            f"</tr>"
+        )
+
+    return f"""
+    <h3 style="margin:16px 0 6px;color:#b30000;">🌩️ Station Weather Details</h3>
+    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">
+      <thead>
+        <tr style="background:#1B3A6B;color:#fff;">
+          <th style="padding:7px 10px;text-align:left;">Station Name</th>
+          <th style="padding:7px 10px;text-align:left;">Rain</th>
+          <th style="padding:7px 10px;text-align:left;">Storm</th>
+          <th style="padding:7px 10px;text-align:left;">Lightning</th>
         </tr>
       </thead>
       <tbody>{rows_html}</tbody>
@@ -610,36 +616,12 @@ def _alert_rows_to_html_table(records: list, title: str, is_station: bool = Fals
 
 # IMD scraper is triggered by Google Apps Script (see .yml).
 # The schedule below must mirror what Apps Script actually sends.
-# Each entry is an IST hour (24-h) when a workflow_dispatch fires.
-_SCAN_HOURS_IST = [6, 9, 12, 15, 18, 21]   # ← adjust to match your Apps Script
-
-
-def _next_scan_text() -> str:
-    """Return a plain-text line stating when the next scheduled scan is (IST)."""
-    from datetime import timedelta
-
-    ist_offset = timedelta(hours=5, minutes=30)
-    now_ist    = datetime.now(timezone.utc) + ist_offset
-    now_h      = now_ist.hour
-    now_m      = now_ist.minute
-
-    # Find the next scheduled hour (same day or next day)
-    next_h = next(
-        (h for h in _SCAN_HOURS_IST if h > now_h or (h == now_h and now_m < 2)),
-        _SCAN_HOURS_IST[0],   # wrap to first slot next day
-    )
-    if next_h <= now_h:
-        next_dt = (now_ist + timedelta(days=1)).replace(
-            hour=next_h, minute=0, second=0, microsecond=0
-        )
-    else:
-        next_dt = now_ist.replace(hour=next_h, minute=0, second=0, microsecond=0)
-
-    return f"Next scheduled scan : {next_dt.strftime('%Y-%m-%d %H:%M IST')} (approx)"
+# Each entry is an (hour, minute) IST tuple when a workflow_dispatch fires.
+_SCAN_TIMES_IST = [(1,15),(4,15),(7,15),(10,15),(13,15),(16,15),(19,15),(22,15)]
 
 
 def _build_trigger_footer_html() -> str:
-    """Build a compact HTML block explaining trigger conditions and next scan."""
+    """Build a compact HTML block explaining email send conditions and scan schedule."""
 
     dist_list = ", ".join(sorted(ALERT_DISTRICTS))
     dist_sev  = ", ".join(sorted(ALERT_SEVERITIES_DISTRICT))
@@ -650,16 +632,16 @@ def _build_trigger_footer_html() -> str:
     other_stn = ", ".join(sorted(ALERT_STATIONS - ALERT_STATIONS_WATCH))
     other_sev = ", ".join(sorted(ALERT_SEVERITIES_STATION))
 
-    next_scan = _next_scan_text()
+    scan_times_str = ", ".join(f"{h:02d}:{m:02d}" for h, m in _SCAN_TIMES_IST)
 
     row_style = "padding:4px 8px;border-bottom:1px solid #eee;font-size:12px;"
-    lbl_style = "color:#555;width:180px;vertical-align:top;padding-right:8px;"
+    lbl_style = "color:#555;width:200px;vertical-align:top;padding-right:8px;"
 
     return f"""
     <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;
                 padding:12px 16px;margin-top:4px;">
       <p style="margin:0 0 8px;font-size:12px;font-weight:bold;color:#444;">
-        ℹ️ Why this alert was sent &amp; when we scan next
+        📋 Email Send Condition
       </p>
       <table style="border-collapse:collapse;width:100%;">
         <tr style="{row_style}">
@@ -679,10 +661,9 @@ def _build_trigger_footer_html() -> str:
           <td style="font-size:12px;">triggers on {other_sev}</td>
         </tr>
         <tr style="padding:4px 8px;font-size:12px;">
-          <td style="{lbl_style}">⏰ {next_scan}</td>
-          <td style="font-size:12px;color:#888;">
-            Scans run at {', '.join(str(h).zfill(2)+':00' for h in _SCAN_HOURS_IST)} IST
-            via GitHub Actions (triggered by Google Apps Script)
+          <td style="{lbl_style}">Scan schedule (IST)</td>
+          <td style="font-size:12px;color:#555;">
+            {scan_times_str} Hrs &nbsp;via GitHub Actions (triggered by Google Apps Script)
           </td>
         </tr>
       </table>
@@ -722,9 +703,10 @@ def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
             lines.append("")
 
     # ── Trigger logic footer ─────────────────────────────────────────────
+    scan_times_str = ", ".join(f"{h:02d}:{m:02d}" for h, m in _SCAN_TIMES_IST)
     lines += [
         "=" * 60,
-        "HOW THIS ALERT WAS TRIGGERED",
+        "EMAIL SEND CONDITION",
         "-" * 40,
         "Districts monitored : " + ", ".join(sorted(ALERT_DISTRICTS)),
         "  → Email sent when severity is: " + ", ".join(sorted(ALERT_SEVERITIES_DISTRICT)),
@@ -733,7 +715,8 @@ def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
         "  → Bhubaneshwar AP / OUAT: email on Watch, Alert, or Warning",
         "  → Cuttack / Khordha    : email on Alert or Warning only",
         "",
-        _next_scan_text(),
+        f"Scan schedule (IST) : {scan_times_str} Hrs",
+        "  via GitHub Actions (triggered by Google Apps Script)",
         "=" * 60,
         "Source: IMD Nowcast Warning system",
         "Scraped automatically by GitHub Actions.",
@@ -744,11 +727,12 @@ def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
 
 def build_email_html(alert_info: dict, timestamp_human: str) -> str:
     district_table = _alert_rows_to_html_table(
-        alert_info["districts"], "🗺️ District Alerts", is_station=False
+        alert_info["districts"], "🗺️ District Alerts"
     )
     station_table  = _alert_rows_to_html_table(
-        alert_info["stations"],  "📍 Station Alerts",  is_station=True
+        alert_info["stations"],  "📍 Station Alerts"
     )
+    details_table  = _station_details_html_table(alert_info["stations"])
 
     # ── Trigger logic HTML block ─────────────────────────────────────────
     trigger_html = _build_trigger_footer_html()
@@ -778,6 +762,7 @@ def build_email_html(alert_info: dict, timestamp_human: str) -> str:
 
       {district_table}
       {station_table}
+      {details_table}
 
       <hr style="margin:24px 0;border:none;border-top:1px solid #eee;">
 
