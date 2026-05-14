@@ -1,44 +1,44 @@
 scraped_at,state_id,type,name,warning_color,severity,issued_at,valid_upto,rain_description,thunderstorm_desc,lightning_probability
-2026-05-14 19:45 UTC,10,station,Angul,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Balangir,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Balasore,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Bargarh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Baripada,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Boudh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Bhadrak,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Bhawanipatna,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Bhubaneshwar AP,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Berhampur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Chandbali,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Chilika Lake,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Cuttack,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Deogarh,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Dhenkanal,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Gopalpur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Jagatsinghpur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Jajpur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Jharsuguda,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Kendrapara,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Keonjhargarh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Khordha,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Konark,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Koraput,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Malkangiri,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Nayagarh,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Nowrangpur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Nuapada,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Paradip Port,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Paralakhemundi,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Phulbani,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Puri,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Rayagada,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Rourkela,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Sambalpur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Sonepur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Sundergarh,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Talcher,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Bhubaneshwar OUAT,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Bhanjanagar,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Gunupur,green,No Warning,2026-05-14 2200,0100,,,
-2026-05-14 19:45 UTC,10,station,Daringibadi,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
-2026-05-14 19:45 UTC,10,station,Anandpur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Angul,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Balangir,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Balasore,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Bargarh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Baripada,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Boudh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Bhadrak,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Bhawanipatna,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Bhubaneshwar AP,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Berhampur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Chandbali,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Chilika Lake,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Cuttack,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Deogarh,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Dhenkanal,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Gopalpur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Jagatsinghpur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Jajpur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Jharsuguda,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Kendrapara,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Keonjhargarh,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Khordha,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Konark,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Koraput,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Malkangiri,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Nayagarh,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Nowrangpur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Nuapada,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Paradip Port,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Paralakhemundi,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Phulbani,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Puri,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Rayagada,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Rourkela,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Sambalpur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Sonepur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Sundergarh,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Talcher,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Bhubaneshwar OUAT,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Bhanjanagar,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Gunupur,green,No Warning,2026-05-14 2200,0100,,,
+2026-05-14 22:45 UTC,10,station,Daringibadi,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
+2026-05-14 22:45 UTC,10,station,Anandpur,yellow,Watch,2026-05-14 2200,0100,Light rain: < 5 mm/hr,,Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)
