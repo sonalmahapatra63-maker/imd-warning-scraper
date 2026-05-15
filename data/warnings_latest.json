@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-15 09:52 UTC",
+    "scraped_at": "2026-05-15 10:45 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -12,248 +12,248 @@
       "name": "ANUGUL",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "BALANGIR",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "BALESHWAR",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "BARAGARH",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "BHADRAK",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "CUTTACK",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "DEOGARH",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "DHENKANAL",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "GAJAPATHI",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "GANJAM",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "JAGATSINGHPUR",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "JAJAPUR",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "JHARSUGUDA",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KALAHANDI",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KANDHAMAL",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KENDRAPARHA",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KENDUJHAR",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KHORDHA",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "KORAPUT",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "MALKANGIRI",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "MAYURBHANJ",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "NABARANGAPUR",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "NAYAGARH",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "NUAPARHA",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "PURI",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "RAYAGARHA",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "SAMBALPUR",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "SUBARNAPUR",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "SUNDARGARH",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "district",
       "name": "BAUDA",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600"
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900"
     },
     {
       "type": "station",
       "name": "Angul",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -261,21 +261,21 @@
     {
       "type": "station",
       "name": "Balangir",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "Light rain: < 5 mm/hr",
-      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
-      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "",
+      "thunderstorm_desc": "",
+      "lightning_probability": ""
     },
     {
       "type": "station",
       "name": "Balasore",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -285,8 +285,8 @@
       "name": "Bargarh",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "Light rain: < 5 mm/hr",
       "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
       "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
@@ -294,21 +294,21 @@
     {
       "type": "station",
       "name": "Baripada",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "",
-      "thunderstorm_desc": "",
-      "lightning_probability": ""
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
       "name": "Boudh",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -318,8 +318,8 @@
       "name": "Bhadrak",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -329,8 +329,8 @@
       "name": "Bhawanipatna",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -340,8 +340,8 @@
       "name": "Bhubaneshwar AP",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -351,8 +351,8 @@
       "name": "Berhampur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -362,8 +362,8 @@
       "name": "Chandbali",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -373,8 +373,8 @@
       "name": "Chilika Lake",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -384,8 +384,8 @@
       "name": "Cuttack",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -395,8 +395,8 @@
       "name": "Deogarh",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -406,8 +406,8 @@
       "name": "Dhenkanal",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -417,8 +417,8 @@
       "name": "Gopalpur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -428,8 +428,8 @@
       "name": "Jagatsinghpur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -439,8 +439,8 @@
       "name": "Jajpur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -450,8 +450,8 @@
       "name": "Jharsuguda",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "Light rain: < 5 mm/hr",
       "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
       "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
@@ -461,8 +461,8 @@
       "name": "Kendrapara",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -472,8 +472,8 @@
       "name": "Keonjhargarh",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1458",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "Light rain: < 5 mm/hr",
       "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
       "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
@@ -483,8 +483,8 @@
       "name": "Khordha",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -494,8 +494,8 @@
       "name": "Konark",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -503,21 +503,21 @@
     {
       "type": "station",
       "name": "Koraput",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "",
-      "thunderstorm_desc": "",
-      "lightning_probability": ""
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
       "name": "Malkangiri",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -527,8 +527,8 @@
       "name": "Nayagarh",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -538,8 +538,8 @@
       "name": "Nowrangpur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -547,21 +547,21 @@
     {
       "type": "station",
       "name": "Nuapada",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "Light rain: < 5 mm/hr",
-      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
-      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "",
+      "thunderstorm_desc": "",
+      "lightning_probability": ""
     },
     {
       "type": "station",
       "name": "Paradip Port",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -571,8 +571,8 @@
       "name": "Paralakhemundi",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -582,8 +582,8 @@
       "name": "Phulbani",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -593,8 +593,8 @@
       "name": "Puri",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -604,8 +604,8 @@
       "name": "Rayagada",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -613,21 +613,21 @@
     {
       "type": "station",
       "name": "Rourkela",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "",
-      "thunderstorm_desc": "",
-      "lightning_probability": ""
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     },
     {
       "type": "station",
       "name": "Sambalpur",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1447",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "Light rain: < 5 mm/hr",
       "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
       "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
@@ -635,21 +635,21 @@
     {
       "type": "station",
       "name": "Sonepur",
-      "warning_color": "yellow",
-      "severity": "Watch",
-      "issued_at": "2026-05-15 1447",
-      "valid_upto": "1600",
-      "rain_description": "Light rain: < 5 mm/hr",
-      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
-      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
+      "warning_color": "green",
+      "severity": "No Warning",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "",
+      "thunderstorm_desc": "",
+      "lightning_probability": ""
     },
     {
       "type": "station",
       "name": "Sundergarh",
       "warning_color": "yellow",
       "severity": "Watch",
-      "issued_at": "2026-05-15 1458",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "Light rain: < 5 mm/hr",
       "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
       "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
@@ -659,8 +659,8 @@
       "name": "Talcher",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -670,8 +670,8 @@
       "name": "Bhubaneshwar OUAT",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -681,8 +681,8 @@
       "name": "Bhanjanagar",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -692,8 +692,8 @@
       "name": "Gunupur",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -703,8 +703,8 @@
       "name": "Daringibadi",
       "warning_color": "green",
       "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -712,13 +712,13 @@
     {
       "type": "station",
       "name": "Anandpur",
-      "warning_color": "green",
-      "severity": "No Warning",
-      "issued_at": "2026-05-15 1300",
-      "valid_upto": "1600",
-      "rain_description": "",
-      "thunderstorm_desc": "",
-      "lightning_probability": ""
+      "warning_color": "yellow",
+      "severity": "Watch",
+      "issued_at": "2026-05-15 1600",
+      "valid_upto": "1900",
+      "rain_description": "Light rain: < 5 mm/hr",
+      "thunderstorm_desc": "Light Thunderstorms with maximum surface wind speed less than 40 kmph",
+      "lightning_probability": "Low cloud to ground Lightning probability ( < 30% probability of lightning occurrence)"
     }
   ]
 }
