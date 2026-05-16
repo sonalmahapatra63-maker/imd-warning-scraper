@@ -1,8 +1,8 @@
 name: IMD Multi Warning Scraper
 
 on:
-  # Schedule removed — triggered externally by Google Apps Script
-  # via workflow_dispatch API for reliable IST-aligned timing.
+  # Triggered by Supabase pg_cron → Edge Function → workflow_dispatch
+  # for precise IST-aligned timing (seconds accuracy).
   workflow_dispatch:
 
 permissions:
@@ -49,16 +49,16 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Stage all data files including PNGs
+          # Force-add PNGs (bypasses any gitignore, ensures new files are tracked)
+          git add -f data/*.png
           git add data/
 
-          if git diff --staged --quiet; then
-            echo "No changes detected"
-          else
-            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "data: IMD scrape ${TIMESTAMP}"
-            git push
-          fi
+          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+
+          # --allow-empty ensures PNGs are always committed even when pixel
+          # content is unchanged (e.g. all-green map between two runs).
+          git commit --allow-empty -m "data: IMD scrape ${TIMESTAMP}"
+          git push
 
       - name: Upload snapshots
         if: always()
