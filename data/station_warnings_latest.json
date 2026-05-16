@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-05-16 04:45 UTC",
+    "scraped_at": "2026-05-16 06:27 UTC",
     "state_id": "10",
     "district_url": "https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=10",
     "station_url": "https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=10"
@@ -14,6 +14,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -25,6 +26,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -36,6 +38,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -47,6 +50,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -58,6 +62,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -69,6 +74,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -80,6 +86,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -91,6 +98,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -102,6 +110,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -113,6 +122,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -124,6 +134,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -135,6 +146,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -146,6 +158,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -157,6 +170,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -168,6 +182,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -179,6 +194,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -190,6 +206,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -201,6 +218,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -212,6 +230,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -223,6 +242,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -234,6 +254,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -245,6 +266,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -256,6 +278,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -267,6 +290,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -278,6 +302,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -289,6 +314,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -300,6 +326,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -311,6 +338,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -322,6 +350,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -333,6 +362,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -344,6 +374,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -355,6 +386,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -366,6 +398,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -377,6 +410,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -388,6 +422,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -399,6 +434,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -410,6 +446,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -421,6 +458,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -432,6 +470,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -443,6 +482,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -454,6 +494,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -465,6 +506,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
@@ -476,6 +518,7 @@
       "severity": "No Warning",
       "issued_at": "2026-05-16 1000",
       "valid_upto": "1300",
+      "balloon_text": "",
       "rain_description": "",
       "thunderstorm_desc": "",
       "lightning_probability": ""
