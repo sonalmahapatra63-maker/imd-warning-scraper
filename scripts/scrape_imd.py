@@ -1,7 +1,6 @@
 import os
 import re
 import csv
-import json
 import sys
 import smtplib
 
@@ -39,21 +38,6 @@ STATION_URL = (
 DATA_DIR = Path(__file__).parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── Alert thresholds ──────────────────────────────────────────
-ALERT_DISTRICTS = {"KHORDHA", "CUTTACK"}
-
-ALERT_STATIONS = {
-    "Bhubaneshwar AP",
-    "Cuttack",
-    "Khordha",
-    "Bhubaneshwar OUAT",
-}
-
-ALERT_SEVERITIES_DISTRICT     = {"Alert", "Warning"}
-ALERT_STATIONS_WATCH          = {"Bhubaneshwar AP", "Bhubaneshwar OUAT"}
-ALERT_SEVERITIES_STATION_WATCH = {"Watch", "Alert", "Warning"}
-ALERT_SEVERITIES_STATION      = {"Alert", "Warning"}
-
 # ── Email ─────────────────────────────────────────────────────
 GMAIL_FROM = os.getenv("GMAIL_FROM", "")
 GMAIL_PASS = os.getenv("GMAIL_APP_PASSWORD", "")
@@ -64,7 +48,6 @@ SUPABASE_URL = os.getenv("SUPABASE_URL", "https://odrvhelastdyozjejqss.supabase.
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 
 DISTRICT_TABLE = "district_warnings"
-STATION_TABLE  = "station_warnings"
 
 # ── Colour maps ───────────────────────────────────────────────
 HEX_TO_COLOR_NAME = {
@@ -81,17 +64,58 @@ WARNING_COLOR_MAP = {
     "#ff0000": "Warning",
 }
 
-MARKER_FILENAME_TO_HEX = {
-    "green":  "#008000",
-    "yellow": "#ffff00",
-    "orange": "#ffa500",
-    "red":    "#ff0000",
+# Severity rank for escalation comparison
+COLOR_RANK = {
+    "green":  0,
+    "yellow": 1,
+    "orange": 2,
+    "red":    3,
 }
 
-# IST scan schedule — must mirror pg_cron / Apps Script schedule
-_SCAN_TIMES_IST = [
-    (1,15),(4,15),(7,15),(10,15),(13,15),(16,15),(19,15),(22,15)
-]
+# ── TPCODL District → Circle & Division mapping ───────────────
+# Exact names from district_name_Circle_Division.csv
+# IMD name KENDRAPARHA is normalized to KENDRAPARA at extraction time
+TPCODL_MAP = {
+    "ANUGUL": {
+        "circles":   ["DHENKANAL"],
+        "divisions": ["ANED, ANGUL", "TED, CHAINPAL"],
+    },
+    "CUTTACK": {
+        "circles":   ["CUTTACK", "BBSR-1", "BBSR-2"],
+        "divisions": ["AED, ATHAGARH", "BCDD-II, BBSR", "CDD-I, Cuttack",
+                      "CDD-II, Cuttack", "CED, Cuttack", "KHED, Khurda", "SED, SALIPUR"],
+    },
+    "DHENKANAL": {
+        "circles":   ["DHENKANAL"],
+        "divisions": ["DED, DHENKANAL", "TED, CHAINPAL"],
+    },
+    "JAGATSINGHPUR": {
+        "circles":   ["PARADEEP"],
+        "divisions": ["JED, JAGATSINGHPUR", "PAED, PARADEEP"],
+    },
+    "KENDRAPARA": {
+        "circles":   ["PARADEEP"],
+        "divisions": ["KED-I, KENDRAPARA", "KED-II, MARSHAGHAI"],
+    },
+    "KHORDHA": {
+        "circles":   ["BBSR1", "BBSR2"],
+        "divisions": ["BCDD-I, BBSR", "BCDD-II, BBSR", "BED, BBSR",
+                      "KHED, KHORDHA", "NYED, NAYAGARH", "NED, NIMAPARA", "BAED, BALUGAON"],
+    },
+    "NAYAGARH": {
+        "circles":   ["BBSR2"],
+        "divisions": ["NYED, NAYAGARH", "KHED, KHORDHA", "BAED, BALUGAON"],
+    },
+    "PURI": {
+        "circles":   ["BBSR2", "BBSR1"],
+        "divisions": ["PED, PURI", "BED, BBSR", "KHED, KHORDHA", "NED, NIMAPARA"],
+    },
+}
+
+# IMD district name normalization — raw scraped name → canonical name
+IMD_NAME_NORMALIZE = {
+    "KENDRAPARHA": "KENDRAPARA",
+}
 
 
 # ─────────────────────────────────────────────────────────────
@@ -101,7 +125,7 @@ _SCAN_TIMES_IST = [
 
 def clean_old_files():
     print("\n[scraper] Cleaning old files...")
-    keep    = {".gitkeep", "warnings_history.jsonl"}
+    keep    = {".gitkeep"}
     deleted = 0
     for pattern in ["*.html", "*.csv", "*.json"]:
         for f in DATA_DIR.glob(pattern):
@@ -146,7 +170,13 @@ def marker_filename_to_color(href: str) -> str:
     m = re.search(r"map-marker-icon-png-(\w+)\.png", href, re.IGNORECASE)
     if not m:
         return ""
-    return MARKER_FILENAME_TO_HEX.get(m.group(1).lower(), "")
+    color_map = {
+        "green":  "#008000",
+        "yellow": "#ffff00",
+        "orange": "#ffa500",
+        "red":    "#ff0000",
+    }
+    return color_map.get(m.group(1).lower(), "")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -165,114 +195,19 @@ def parse_station_aria_label(aria_label: str) -> dict:
     warn_m       = re.search(r"\b(No Warning|Watch|Alert|Warning)\b", aria_label)
     warning_text = warn_m.group(1) if warn_m else "Unknown"
 
-    time_m    = re.search(
+    time_m   = re.search(
         r"Time of issue:\s*([\d-]+)\s*(?:</br>|<br\s*/?>|\s)([\d]+)\s*Hrs",
         aria_label, re.IGNORECASE,
     )
     issued_at  = f"{time_m.group(1)} {time_m.group(2)}" if time_m else ""
-
     valid_m    = re.search(r"Valid upto:\s*([\d]+)\s*Hrs", aria_label, re.IGNORECASE)
     valid_upto = valid_m.group(1) if valid_m else ""
 
-    rain_description      = ""
-    thunderstorm_desc     = ""
-    lightning_probability = ""
-
-    for line in lines[1:]:
-        ll = line.lower()
-        if "rain" in ll and not rain_description:
-            rain_description = line
-        elif ("thunderstorm" in ll or "kmph" in ll) and not thunderstorm_desc:
-            thunderstorm_desc = line
-        elif "lightning probability" in ll and not lightning_probability:
-            lightning_probability = line
-
     return {
-        "name":                  name,
-        "warning_text":          warning_text,
-        "issued_at":             issued_at,
-        "valid_upto":            valid_upto,
-        "rain_description":      rain_description,
-        "thunderstorm_desc":     thunderstorm_desc,
-        "lightning_probability": lightning_probability,
-    }
-
-
-# ─────────────────────────────────────────────────────────────
-# BALLOON TEXT PARSER  (district popup)
-# ─────────────────────────────────────────────────────────────
-
-def parse_district_balloon(raw_text: str) -> dict:
-    """
-    Parse the amCharts balloon popup text that appears when a
-    district with cursor="pointer" is clicked on the district map.
-
-    Typical balloon text (after stripping HTML) looks like:
-        SUNDARGARH
-        Thunderstorm with lightning very likely
-        Heavy to very heavy rain: likely
-        Maximum wind speed: 40-50 kmph gusting to 60 kmph
-        Lightning probability: High
-        Time of issue: 2026-05-14 0830 Hrs
-        Valid upto: 1730 Hrs
-
-    Returns a dict with the parsed fields.
-    """
-    if not raw_text:
-        return {
-            "balloon_text":          "",
-            "rain_description":      "",
-            "thunderstorm_desc":     "",
-            "lightning_probability": "",
-            "issued_at":             "",
-            "valid_upto":            "",
-        }
-
-    soup  = BeautifulSoup(raw_text, "html.parser")
-    lines = [
-        line.strip()
-        for line in soup.get_text(separator="\n").splitlines()
-        if line.strip()
-    ]
-
-    rain_description      = ""
-    thunderstorm_desc     = ""
-    lightning_probability = ""
-    issued_at             = ""
-    valid_upto            = ""
-
-    for line in lines:
-        ll = line.lower()
-        if ("rain" in ll or "rainfall" in ll) and not rain_description:
-            rain_description = line
-        elif ("thunderstorm" in ll or "lightning very likely" in ll
-              or "wind speed" in ll or "kmph" in ll) and not thunderstorm_desc:
-            thunderstorm_desc = line
-        elif "lightning probability" in ll and not lightning_probability:
-            lightning_probability = line
-        elif "time of issue" in ll and not issued_at:
-            # e.g. "Time of issue: 2026-05-14 0830 Hrs"
-            m = re.search(
-                r"Time of issue:\s*([\d-]+)\s*([\d]+)\s*Hrs",
-                line, re.IGNORECASE,
-            )
-            if m:
-                issued_at = f"{m.group(1)} {m.group(2)}"
-        elif "valid upto" in ll and not valid_upto:
-            m = re.search(r"Valid upto:\s*([\d]+)\s*Hrs", line, re.IGNORECASE)
-            if m:
-                valid_upto = m.group(1)
-
-    # Store the full cleaned balloon text as one string (for debugging/CSV)
-    balloon_text = " | ".join(lines)
-
-    return {
-        "balloon_text":          balloon_text,
-        "rain_description":      rain_description,
-        "thunderstorm_desc":     thunderstorm_desc,
-        "lightning_probability": lightning_probability,
-        "issued_at":             issued_at,
-        "valid_upto":            valid_upto,
+        "name":      name,
+        "issued_at": issued_at,
+        "valid_upto": valid_upto,
+        "warning_text": warning_text,
     }
 
 
@@ -280,39 +215,44 @@ def parse_district_balloon(raw_text: str) -> dict:
 # PAGE LOADERS
 # ─────────────────────────────────────────────────────────────
 
-def load_page(url: str, screenshot_name: str) -> str:
+def _launch_browser(p):
+    return p.chromium.launch(
+        headless=True,
+        args=[
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+            "--disable-setuid-sandbox",
+        ],
+    )
+
+
+def load_district_page(url: str, screenshot_name: str) -> str:
     """
-    Generic page loader for the station page.
-    Navigates, waits for SVG, takes screenshot, returns HTML.
+    Load the district warnings page.
+    No balloon-click capture — those fields (rain_description etc.)
+    are JS-rendered and unreliable. We only need fill colours.
     """
-    print(f"\n[scraper] Loading: {url}")
+    print(f"\n[scraper] Loading district page: {url}")
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-setuid-sandbox",
-            ],
-        )
+        browser = _launch_browser(p)
         context = browser.new_context(
-            viewport={"width": 1400, "height": 1200},
+            viewport={"width": 1400, "height": 1000},
             locale="en-IN",
         )
         page = context.new_page()
 
         try:
-            page.goto(url, wait_until="networkidle", timeout=90000)
+            page.goto(url, wait_until="networkidle", timeout=60000)
         except PlaywrightTimeout:
-            print("[scraper] WARNING: page load timed out — continuing anyway")
+            print("[scraper] WARNING: district page load timed out — continuing")
 
         try:
-            page.wait_for_selector("svg", timeout=40000)
-            page.wait_for_timeout(8000)
+            page.wait_for_selector("svg", timeout=20000)
+            page.wait_for_timeout(5000)
         except PlaywrightTimeout:
-            print("[scraper] WARNING: SVG not detected — continuing anyway")
+            print("[scraper] WARNING: SVG not detected on district page")
 
         screenshot_path = DATA_DIR / screenshot_name
         page.screenshot(path=str(screenshot_path), full_page=True)
@@ -324,105 +264,29 @@ def load_page(url: str, screenshot_name: str) -> str:
     return html
 
 
-def load_district_page(url: str, screenshot_name: str) -> tuple[str, dict]:
-    """
-    Loads the district warning page and captures balloon popup text
-    for every district that has cursor="pointer" (i.e. districts that
-    have detailed warning text when clicked — e.g. SUNDARGARH, KENDUJHAR,
-    MAYURBHANJ during active weather events).
-
-    Returns:
-        html         — full page HTML (for static colour extraction)
-        balloon_map  — dict of { district_name_upper: parsed_balloon_dict }
-    """
-    print(f"\n[scraper] Loading district page (with balloon capture): {url}")
-
-    balloon_map: dict = {}
+def load_station_page(url: str, screenshot_name: str) -> str:
+    """Load station page — used only for issued_at / valid_upto enrichment."""
+    print(f"\n[scraper] Loading station page: {url}")
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-setuid-sandbox",
-            ],
-        )
+        browser = _launch_browser(p)
         context = browser.new_context(
-            viewport={"width": 1400, "height": 1200},
+            viewport={"width": 1400, "height": 1000},
             locale="en-IN",
         )
         page = context.new_page()
 
         try:
-            page.goto(url, wait_until="networkidle", timeout=90000)
+            page.goto(url, wait_until="networkidle", timeout=60000)
         except PlaywrightTimeout:
-            print("[scraper] WARNING: district page load timed out — continuing anyway")
+            print("[scraper] WARNING: station page load timed out — continuing")
 
         try:
-            page.wait_for_selector("svg", timeout=40000)
-            page.wait_for_timeout(8000)
+            page.wait_for_selector("svg", timeout=20000)
+            page.wait_for_timeout(5000)
         except PlaywrightTimeout:
-            print("[scraper] WARNING: SVG not detected on district page")
+            print("[scraper] WARNING: SVG not detected on station page")
 
-        # ── Balloon capture: click each cursor="pointer" district ─────────
-        # These are the districts that IMD has assigned detailed warning text.
-        # The balloon div is injected by amCharts on hover/click.
-        try:
-            clickable_paths = page.locator('svg path[cursor="pointer"]')
-            count = clickable_paths.count()
-            print(f"[scraper] Found {count} clickable district(s) with popup balloons")
-
-            for i in range(count):
-                try:
-                    path_el = clickable_paths.nth(i)
-
-                    # Get district name from aria-label before clicking
-                    aria = path_el.get_attribute("aria-label") or ""
-                    district_name = aria.strip().upper()
-
-                    # Click the district to trigger the balloon
-                    path_el.scroll_into_view_if_needed()
-                    path_el.click()
-
-                    # Wait for the amCharts balloon div to appear
-                    balloon_selector = ".amcharts-balloon-div"
-                    try:
-                        page.wait_for_selector(
-                            balloon_selector,
-                            state="visible",
-                            timeout=3000,
-                        )
-                        page.wait_for_timeout(500)  # let content fully render
-
-                        balloon_el = page.locator(balloon_selector)
-                        if balloon_el.is_visible():
-                            raw_html = balloon_el.inner_html()
-                            parsed   = parse_district_balloon(raw_html)
-                            if district_name:
-                                balloon_map[district_name] = parsed
-                                print(
-                                    f"[scraper]   ✔ Balloon captured for {district_name}: "
-                                    f"{parsed['balloon_text'][:80]}..."
-                                )
-                        else:
-                            print(f"[scraper]   ✘ Balloon not visible for {district_name}")
-
-                    except PlaywrightTimeout:
-                        print(f"[scraper]   ✘ No balloon appeared for {district_name}")
-
-                    # Click away (on a neutral area) to dismiss the balloon
-                    page.mouse.click(10, 10)
-                    page.wait_for_timeout(300)
-
-                except Exception as e:
-                    print(f"[scraper]   ✘ Error clicking district {i}: {e}")
-
-        except Exception as e:
-            print(f"[scraper] Balloon capture failed (non-fatal): {e}")
-
-        # ── Screenshot after all clicks ───────────────────────────────────
         screenshot_path = DATA_DIR / screenshot_name
         page.screenshot(path=str(screenshot_path), full_page=True)
         print(f"[scraper] Screenshot saved → {screenshot_path.name}")
@@ -430,56 +294,44 @@ def load_district_page(url: str, screenshot_name: str) -> tuple[str, dict]:
         html = page.content()
         browser.close()
 
-    print(f"[scraper] Balloon map captured for {len(balloon_map)} district(s): "
-          f"{list(balloon_map.keys())}")
-    return html, balloon_map
+    return html
 
 
 # ─────────────────────────────────────────────────────────────
 # EXTRACTION — DISTRICTS
-# Accepts balloon_map to enrich records with popup detail text.
 # ─────────────────────────────────────────────────────────────
 
-def extract_district_records(html: str, balloon_map: dict = None) -> list:
+def extract_district_records(html: str) -> list:
     """
     Extract district warning records from the SVG map HTML.
-    balloon_map (optional): { DISTRICT_NAME_UPPER: parsed_balloon_dict }
-    Districts found in balloon_map get rain/storm/lightning fields populated.
-    issued_at / valid_upto are also taken from balloon data if available,
-    otherwise filled in later by enrich_district_issued_at().
+    Only extracts: name, warning_color, severity.
+    issued_at / valid_upto are filled later by enrich_district_issued_at().
+    Applies IMD_NAME_NORMALIZE to fix known name mismatches.
     """
-    soup       = BeautifulSoup(html, "html.parser")
-    records    = []
-    seen       = set()
-    balloon_map = balloon_map or {}
+    soup    = BeautifulSoup(html, "html.parser")
+    records = []
+    seen    = set()
 
     def _make_record(label: str, fill: str) -> dict:
-        name      = label.strip()
-        name_key  = name.upper()
+        raw_name  = label.strip()
+        # Normalize known IMD name mismatches
+        name      = IMD_NAME_NORMALIZE.get(raw_name.upper(), raw_name.upper())
         hex_color = normalize_color(fill)
-        balloon   = balloon_map.get(name_key, {})
-
         return {
-            "type":                  "district",
-            "name":                  name,
-            "warning_color":         hex_to_color_name(hex_color),
-            "severity":              color_to_severity(fill),
-            # Time info — from balloon if available, else filled by enrich step
-            "issued_at":             balloon.get("issued_at", ""),
-            "valid_upto":            balloon.get("valid_upto", ""),
-            # Detailed warning text from balloon popup (empty if no popup)
-            "balloon_text":          balloon.get("balloon_text", ""),
-            "rain_description":      balloon.get("rain_description", ""),
-            "thunderstorm_desc":     balloon.get("thunderstorm_desc", ""),
-            "lightning_probability": balloon.get("lightning_probability", ""),
+            "type":          "district",
+            "name":          name,
+            "warning_color": hex_to_color_name(hex_color),
+            "severity":      color_to_severity(fill),
+            "issued_at":     "",
+            "valid_upto":    "",
         }
 
     # Primary: amcharts-map-area SVG paths
     for path in soup.select("svg path.amcharts-map-area"):
         label = (path.get("aria-label") or "").strip()
         fill  = (path.get("fill") or "").strip()
-        if label and fill and label.strip() not in seen:
-            seen.add(label.strip())
+        if label and fill and label.upper() not in seen:
+            seen.add(label.upper())
             records.append(_make_record(label, fill))
 
     # Fallback: any SVG path with aria-label + fill
@@ -487,22 +339,23 @@ def extract_district_records(html: str, balloon_map: dict = None) -> list:
         for path in soup.select("svg path"):
             label = (path.get("aria-label") or path.get("title") or "").strip()
             fill  = (path.get("fill") or path.get("stroke") or "").strip()
-            if label and fill and label not in seen:
-                seen.add(label)
+            if label and fill and label.upper() not in seen:
+                seen.add(label.upper())
                 records.append(_make_record(label, fill))
 
     print(f"[scraper] District records extracted: {len(records)}")
-    balloon_hits = sum(1 for r in records if r.get("balloon_text"))
-    print(f"[scraper] Districts with balloon data: {balloon_hits}")
     return records
 
 
 # ─────────────────────────────────────────────────────────────
-# EXTRACTION — STATIONS  (unchanged)
+# EXTRACTION — STATIONS  (for time enrichment only)
 # ─────────────────────────────────────────────────────────────
 
 def extract_station_records(html: str) -> list:
-
+    """
+    Extract station records. Used ONLY to derive consensus issued_at / valid_upto
+    for district enrichment. Station records are NOT uploaded to Supabase.
+    """
     soup    = BeautifulSoup(html, "html.parser")
     records = []
     seen    = set()
@@ -515,10 +368,9 @@ def extract_station_records(html: str) -> list:
     }
 
     for img_el in soup.select("svg image.amcharts-map-image"):
-        href      = (img_el.get("xlink:href") or img_el.get("href") or "").strip()
-        color_hex = marker_filename_to_color(href)
-        parent    = img_el.parent
-        aria      = (parent.get("aria-label") or "").strip() if parent else ""
+        href   = (img_el.get("xlink:href") or img_el.get("href") or "").strip()
+        parent = img_el.parent
+        aria   = (parent.get("aria-label") or "").strip() if parent else ""
         if not aria:
             continue
         parsed = parse_station_aria_label(aria)
@@ -526,72 +378,25 @@ def extract_station_records(html: str) -> list:
         if not name or name in seen:
             continue
         seen.add(name)
+        color_hex = marker_filename_to_color(href)
         if not color_hex:
             color_hex = TEXT_TO_COLOR.get(parsed["warning_text"], "")
         records.append({
-            "type":                  "station",
-            "name":                  name,
-            "warning_color":         hex_to_color_name(color_hex),
-            "severity":              color_to_severity(color_hex) if color_hex else parsed["warning_text"],
-            "issued_at":             parsed["issued_at"],
-            "valid_upto":            parsed["valid_upto"],
-            "balloon_text":          "",   # stations don't have balloon popups
-            "rain_description":      parsed.get("rain_description", ""),
-            "thunderstorm_desc":     parsed.get("thunderstorm_desc", ""),
-            "lightning_probability": parsed.get("lightning_probability", ""),
+            "name":      name,
+            "issued_at": parsed["issued_at"],
+            "valid_upto": parsed["valid_upto"],
         })
 
-    # Fallback: embedded JSON in <script> tags
-    if not records:
-        print("[scraper] WARNING: primary extraction failed — trying JSON fallback")
-        for script in soup.find_all("script"):
-            text = script.string or script.get_text()
-            if not text:
-                continue
-            for pattern in [
-                r"dataProvider\s*[:=]\s*(\[[\s\S]*?\])",
-                r"chart\.data\s*=\s*(\[[\s\S]*?\])",
-                r"imageSeries\.data\s*=\s*(\[[\s\S]*?\])",
-                r"pointSeries\.data\s*=\s*(\[[\s\S]*?\])",
-            ]:
-                for m in re.finditer(pattern, text):
-                    try:
-                        for item in json.loads(m.group(1)):
-                            name  = (item.get("title") or item.get("name") or
-                                     item.get("station") or item.get("id") or "")
-                            color = (item.get("color") or item.get("fill") or
-                                     item.get("warningColor") or "")
-                            if name and name not in seen:
-                                seen.add(name)
-                                hex_color = normalize_color(color)
-                                records.append({
-                                    "type":                  "station",
-                                    "name":                  name,
-                                    "warning_color":         hex_to_color_name(hex_color),
-                                    "severity":              color_to_severity(color),
-                                    "issued_at":             "",
-                                    "valid_upto":            "",
-                                    "balloon_text":          "",
-                                    "rain_description":      "",
-                                    "thunderstorm_desc":     "",
-                                    "lightning_probability": "",
-                                })
-                    except Exception:
-                        pass
-
-    print(f"[scraper] Station records extracted: {len(records)}")
+    print(f"[scraper] Station records extracted: {len(records)} (time enrichment only)")
     return records
 
 
 # ─────────────────────────────────────────────────────────────
-# ENRICH DISTRICTS
-# For districts WITHOUT balloon data, copy the consensus
-# issued_at / valid_upto from station records.
-# Districts WITH balloon data already have this from the popup.
+# ENRICH DISTRICTS with consensus issued_at / valid_upto
 # ─────────────────────────────────────────────────────────────
 
 def enrich_district_issued_at(district_records: list, station_records: list) -> list:
-    issued_vals = [r["issued_at"] for r in station_records if r.get("issued_at")]
+    issued_vals = [r["issued_at"]  for r in station_records if r.get("issued_at")]
     valid_vals  = [r["valid_upto"] for r in station_records if r.get("valid_upto")]
 
     if not issued_vals:
@@ -603,7 +408,6 @@ def enrich_district_issued_at(district_records: list, station_records: list) -> 
     print(f"[scraper] Station consensus → issued_at={common_issued}  valid_upto={common_valid}")
 
     for r in district_records:
-        # Only fill from station data if the balloon didn't already provide it
         if not r.get("issued_at"):
             r["issued_at"] = common_issued
         if not r.get("valid_upto"):
@@ -613,238 +417,218 @@ def enrich_district_issued_at(district_records: list, station_records: list) -> 
 
 
 # ─────────────────────────────────────────────────────────────
-# ALERT CHECK
+# SUPABASE — READ PREVIOUS STATE
 # ─────────────────────────────────────────────────────────────
 
-def check_alerts(district_records: list, station_records: list) -> dict:
-    triggered_districts = [
-        r for r in district_records
-        if r["name"].upper() in ALERT_DISTRICTS
-        and r["severity"] in ALERT_SEVERITIES_DISTRICT
-    ]
-    triggered_stations = [
-        r for r in station_records
-        if r["name"] in ALERT_STATIONS
-        and (
-            (r["name"] in ALERT_STATIONS_WATCH
-             and r["severity"] in ALERT_SEVERITIES_STATION_WATCH)
-            or
-            (r["name"] not in ALERT_STATIONS_WATCH
-             and r["severity"] in ALERT_SEVERITIES_STATION)
+def read_previous_state(sb: Client) -> dict:
+    """
+    Returns { district_name_upper: color_rank_int } for all rows in
+    district_warnings for this state_id.
+    If table is empty (cold start), returns {} — callers treat missing
+    entries as rank 0 (green).
+    """
+    try:
+        resp = (
+            sb.table(DISTRICT_TABLE)
+            .select("name, warning_color")
+            .eq("state_id", STATE_ID)
+            .execute()
         )
-    ]
-    return {
-        "should_alert": bool(triggered_districts or triggered_stations),
-        "districts":    triggered_districts,
-        "stations":     triggered_stations,
-    }
+        prev = {}
+        for row in (resp.data or []):
+            name  = (row.get("name") or "").strip().upper()
+            color = (row.get("warning_color") or "green").strip().lower()
+            prev[name] = COLOR_RANK.get(color, 0)
+        print(f"[scraper] Previous state loaded: {len(prev)} district(s)")
+        return prev
+    except Exception as e:
+        print(f"[scraper] WARNING: could not read previous state: {e}")
+        return {}
 
 
 # ─────────────────────────────────────────────────────────────
-# EMAIL
+# TPCODL ESCALATION CHECK
 # ─────────────────────────────────────────────────────────────
 
-def _alert_rows_to_html_table(records: list, title: str) -> str:
-    if not records:
-        return ""
-    COLOR_BADGE = {
-        "red":    ("#ff0000", "#fff"),
-        "orange": ("#ffa500", "#000"),
-        "yellow": ("#ffff00", "#000"),
-        "green":  ("#008000", "#fff"),
-    }
-    rows_html = ""
-    for r in records:
-        bg, fg = COLOR_BADGE.get(r.get("warning_color", "").lower(), ("#cccccc", "#000"))
-        badge = (
-            f'<span style="background:{bg};color:{fg};padding:2px 8px;'
-            f'border-radius:4px;font-weight:bold;font-size:12px;">'
-            f'{r["severity"].upper()}</span>'
-        )
-        rows_html += (
+def check_tpcodl_escalation(district_records: list, prev_state: dict) -> list:
+    """
+    Returns list of district records that:
+      1. Are in TPCODL_MAP (one of the 8 TPCODL districts)
+      2. Have warning_color of orange or red (rank >= 2)
+      3. Have a HIGHER rank than the previous scan (strict escalation)
+
+    Cold-start behaviour: missing prev_state entry treated as rank 0 (green),
+    so any orange/red on first run correctly triggers an email.
+    """
+    escalated = []
+    for r in district_records:
+        name = r["name"].upper()
+        if name not in TPCODL_MAP:
+            continue
+        new_rank  = COLOR_RANK.get(r["warning_color"].lower(), 0)
+        prev_rank = prev_state.get(name, 0)  # default green if unseen
+        if new_rank >= 2 and new_rank > prev_rank:
+            escalated.append(r)
+            print(
+                f"[scraper] ESCALATION: {name}  "
+                f"{list(COLOR_RANK.keys())[prev_rank]} → {r['warning_color']}  "
+                f"(rank {prev_rank} → {new_rank})"
+            )
+
+    if not escalated:
+        print("[scraper] No TPCODL escalations this scan")
+
+    return escalated
+
+
+# ─────────────────────────────────────────────────────────────
+# EMAIL BUILDERS
+# ─────────────────────────────────────────────────────────────
+
+COLOR_BADGE_CSS = {
+    "red":    ("background:#cc0000;color:#fff;",  ),
+    "orange": ("background:#e07000;color:#fff;",  ),
+    "yellow": ("background:#b8b800;color:#fff;",  ),
+    "green":  ("background:#008000;color:#fff;",  ),
+}
+
+
+def _badge(color: str, label: str) -> str:
+    style = COLOR_BADGE_CSS.get(color.lower(), ("background:#ccc;color:#000;",))[0]
+    return (
+        f'<span style="{style}padding:2px 10px;border-radius:4px;'
+        f'font-weight:bold;font-size:12px;letter-spacing:.5px;">'
+        f'{label.upper()}</span>'
+    )
+
+
+def _build_district_table(escalated: list) -> str:
+    rows = ""
+    for r in escalated:
+        badge = _badge(r["warning_color"], r["severity"])
+        rows += (
             f"<tr>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;text-align:center;'>{badge}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('issued_at','—')}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;'>{r.get('valid_upto','—')} Hrs</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-weight:600;font-size:13px;'>{r['name'].title()}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"text-align:center;'>{badge}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-size:12px;color:#555;'>{r.get('issued_at', '—')}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-size:12px;color:#555;'>{r.get('valid_upto', '—')} Hrs</td>"
             f"</tr>"
         )
     return f"""
-    <h3 style="margin:16px 0 6px;color:#b30000;">{title}</h3>
-    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">
+    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;">
       <thead>
         <tr style="background:#1B3A6B;color:#fff;">
-          <th style="padding:7px 10px;text-align:left;">Name</th>
-          <th style="padding:7px 10px;">Severity</th>
-          <th style="padding:7px 10px;text-align:left;">Issued At</th>
-          <th style="padding:7px 10px;text-align:left;">Valid Upto</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">District</th>
+          <th style="padding:8px 12px;font-size:13px;">Severity</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">Issued At</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">Valid Upto</th>
         </tr>
       </thead>
-      <tbody>{rows_html}</tbody>
+      <tbody>{rows}</tbody>
     </table>"""
 
 
-def _weather_details_html_table(records: list, title: str) -> str:
-    """Render weather detail rows for both district and station records."""
-    detail_records = [
-        r for r in records
-        if r.get("rain_description") or r.get("thunderstorm_desc")
-        or r.get("lightning_probability") or r.get("balloon_text")
-    ]
-    if not detail_records:
-        return ""
-    rows_html = ""
-    for r in detail_records:
-        rain  = (r.get("rain_description")      or "—").strip()
-        storm = (r.get("thunderstorm_desc")      or "—").strip()
-        light = (r.get("lightning_probability")  or "—").strip()
-        rows_html += (
+def _build_ops_table(escalated: list) -> str:
+    """
+    Table 2: Affected Circles & Divisions for each escalated district.
+    Uses exact names from TPCODL_MAP.
+    """
+    rows = ""
+    for r in escalated:
+        name    = r["name"].upper()
+        mapping = TPCODL_MAP.get(name, {})
+        circles   = ", ".join(mapping.get("circles",   ["-"]))
+        divisions = ", ".join(mapping.get("divisions", ["-"]))
+        rows += (
             f"<tr>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-weight:600;'>{r['name']}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>🌧️ {rain}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>⛈️ {storm}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #ddd;font-size:12px;'>⚡ {light}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-weight:600;font-size:13px;'>{r['name'].title()}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-size:12px;'>{circles}</td>"
+            f"<td style='padding:7px 12px;border-bottom:1px solid #e8e8e8;"
+            f"font-size:12px;'>{divisions}</td>"
             f"</tr>"
         )
     return f"""
-    <h3 style="margin:16px 0 6px;color:#b30000;">{title}</h3>
-    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">
+    <table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;">
       <thead>
         <tr style="background:#1B3A6B;color:#fff;">
-          <th style="padding:7px 10px;text-align:left;">Name</th>
-          <th style="padding:7px 10px;text-align:left;">Rain</th>
-          <th style="padding:7px 10px;text-align:left;">Storm / Wind</th>
-          <th style="padding:7px 10px;text-align:left;">Lightning</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">District</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">Circles Affected</th>
+          <th style="padding:8px 12px;text-align:left;font-size:13px;">Divisions Affected</th>
         </tr>
       </thead>
-      <tbody>{rows_html}</tbody>
+      <tbody>{rows}</tbody>
     </table>"""
 
 
-def _build_trigger_footer_html() -> str:
-    dist_list     = ", ".join(sorted(ALERT_DISTRICTS))
-    dist_sev      = ", ".join(sorted(ALERT_SEVERITIES_DISTRICT))
-    watch_stn     = ", ".join(sorted(ALERT_STATIONS_WATCH))
-    watch_sev     = ", ".join(sorted(ALERT_SEVERITIES_STATION_WATCH))
-    other_stn     = ", ".join(sorted(ALERT_STATIONS - ALERT_STATIONS_WATCH))
-    other_sev     = ", ".join(sorted(ALERT_SEVERITIES_STATION))
-    scan_times_str = ", ".join(f"{h:02d}:{m:02d}" for h, m in _SCAN_TIMES_IST)
-    row_style = "padding:4px 8px;border-bottom:1px solid #eee;font-size:12px;"
-    lbl_style = "color:#555;width:200px;vertical-align:top;padding-right:8px;"
-    return f"""
-    <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;
-                padding:12px 16px;margin-top:4px;">
-      <p style="margin:0 0 8px;font-size:12px;font-weight:bold;color:#444;">
-        📋 Email Send Condition
-      </p>
-      <table style="border-collapse:collapse;width:100%;">
-        <tr style="{row_style}">
-          <td style="{lbl_style}">Districts monitored</td>
-          <td style="font-size:12px;">{dist_list}</td>
-        </tr>
-        <tr style="{row_style}">
-          <td style="{lbl_style}">District triggers on</td>
-          <td style="font-size:12px;">{dist_sev}</td>
-        </tr>
-        <tr style="{row_style}">
-          <td style="{lbl_style}">{watch_stn}</td>
-          <td style="font-size:12px;">triggers on {watch_sev}</td>
-        </tr>
-        <tr style="{row_style}">
-          <td style="{lbl_style}">{other_stn}</td>
-          <td style="font-size:12px;">triggers on {other_sev}</td>
-        </tr>
-        <tr style="padding:4px 8px;font-size:12px;">
-          <td style="{lbl_style}">Scan schedule (IST)</td>
-          <td style="font-size:12px;color:#555;">
-            {scan_times_str} Hrs &nbsp;via Supabase pg_cron → GitHub Actions
-          </td>
-        </tr>
-      </table>
-    </div>"""
+def _subject_counts(escalated: list) -> tuple[int, int]:
+    """Return (unique_circle_count, unique_division_count) across all escalated districts."""
+    circles   = set()
+    divisions = set()
+    for r in escalated:
+        name    = r["name"].upper()
+        mapping = TPCODL_MAP.get(name, {})
+        for c in mapping.get("circles",   []):
+            circles.add(c)
+        for d in mapping.get("divisions", []):
+            divisions.add(d)
+    return len(circles), len(divisions)
 
 
-def build_email_plain(alert_info: dict, timestamp_human: str) -> str:
-    lines = [
-        f"IMD Warning Alert — {timestamp_human}",
-        "=" * 60, "",
-        "⚠️  High-severity warnings detected:", "",
-    ]
-    for section_label, section_records, include_details in [
-        ("DISTRICT ALERTS", alert_info["districts"], True),
-        ("STATION ALERTS",  alert_info["stations"],  True),
-    ]:
-        if section_records:
-            lines += [section_label, "-" * 40]
-            for r in section_records:
-                lines.append(
-                    f"  • {r['name']}  |  {r['severity'].upper()} ({r['warning_color']})"
-                )
-                if r.get("issued_at"):
-                    lines.append(f"    Issued at : {r['issued_at']}")
-                if r.get("valid_upto"):
-                    lines.append(f"    Valid upto: {r['valid_upto']} Hrs")
-                if include_details:
-                    if r.get("rain_description"):
-                        lines.append(f"    Rain      : {r['rain_description']}")
-                    if r.get("thunderstorm_desc"):
-                        lines.append(f"    Thunderst.: {r['thunderstorm_desc']}")
-                    if r.get("lightning_probability"):
-                        lines.append(f"    Lightning : {r['lightning_probability']}")
-            lines.append("")
+def build_email_html(escalated: list, timestamp_human: str) -> str:
+    # Determine highest severity label for header colour
+    has_red    = any(r["warning_color"].lower() == "red"    for r in escalated)
+    has_orange = any(r["warning_color"].lower() == "orange" for r in escalated)
+    header_bg  = "#cc0000" if has_red else "#e07000"
+    sev_label  = "⛔ WARNING" if has_red else "🚨 ALERT"
 
-    scan_times_str = ", ".join(f"{h:02d}:{m:02d}" for h, m in _SCAN_TIMES_IST)
-    lines += [
-        "=" * 60,
-        "EMAIL SEND CONDITION",
-        "-" * 40,
-        "Districts monitored : " + ", ".join(sorted(ALERT_DISTRICTS)),
-        "  → Email sent when severity is: " + ", ".join(sorted(ALERT_SEVERITIES_DISTRICT)),
-        "",
-        "Stations monitored  : " + ", ".join(sorted(ALERT_STATIONS)),
-        "  → Bhubaneshwar AP / OUAT: email on Watch, Alert, or Warning",
-        "  → Cuttack / Khordha    : email on Alert or Warning only",
-        "",
-        f"Scan schedule (IST) : {scan_times_str} Hrs",
-        "  via Supabase pg_cron → Edge Function → GitHub Actions",
-        "=" * 60,
-        "Source: IMD Nowcast Warning system",
-        "Attachments: district map PNG, station map PNG",
-    ]
-    return "\n".join(lines)
+    district_table = _build_district_table(escalated)
+    ops_table      = _build_ops_table(escalated)
 
-
-def build_email_html(alert_info: dict, timestamp_human: str) -> str:
-    district_table         = _alert_rows_to_html_table(alert_info["districts"], "🗺️ District Alerts")
-    station_table          = _alert_rows_to_html_table(alert_info["stations"],  "📍 Station Alerts")
-    district_details_table = _weather_details_html_table(alert_info["districts"], "🌩️ District Weather Details")
-    station_details_table  = _weather_details_html_table(alert_info["stations"],  "🌩️ Station Weather Details")
-    trigger_html           = _build_trigger_footer_html()
+    district_names = ", ".join(r["name"].title() for r in escalated)
 
     return f"""<!DOCTYPE html>
 <html>
 <body style="font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:0;">
-  <div style="max-width:720px;margin:20px auto;background:#fff;border-radius:8px;
-              box-shadow:0 2px 8px rgba(0,0,0,.12);overflow:hidden;">
-    <div style="background:#b30000;padding:18px 24px;">
-      <h2 style="margin:0;color:#fff;font-size:18px;">🚨 IMD HIGH ALERT</h2>
-      <p style="margin:4px 0 0;color:#ffdada;font-size:12px;">Scraped at {timestamp_human}</p>
-    </div>
-    <div style="padding:20px 24px;">
-      <p style="margin:0 0 12px;color:#333;">
-        High-severity weather warnings detected for monitored locations in Odisha.
+  <div style="max-width:760px;margin:24px auto;background:#fff;border-radius:8px;
+              box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden;">
+
+    <!-- Header -->
+    <div style="background:{header_bg};padding:20px 28px;">
+      <h2 style="margin:0;color:#fff;font-size:18px;">
+        {sev_label} — IMD Nowcast Warning (TPCODL)
+      </h2>
+      <p style="margin:6px 0 0;color:rgba(255,255,255,.85);font-size:12px;">
+        Scraped at {timestamp_human} &nbsp;|&nbsp; Districts: {district_names}
       </p>
+    </div>
+
+    <div style="padding:24px 28px;">
+
+      <!-- Table 1 -->
+      <h3 style="margin:0 0 10px;color:#1B3A6B;font-size:14px;letter-spacing:.3px;">
+        DISTRICT WARNING STATUS
+      </h3>
       {district_table}
-      {district_details_table}
-      {station_table}
-      {station_details_table}
-      <hr style="margin:24px 0;border:none;border-top:1px solid #eee;">
-      {trigger_html}
-      <hr style="margin:16px 0;border:none;border-top:1px solid #eee;">
-      <p style="font-size:11px;color:#888;margin:0;">
+
+      <!-- Table 2 -->
+      <h3 style="margin:24px 0 10px;color:#1B3A6B;font-size:14px;letter-spacing:.3px;">
+        AFFECTED TPCODL CIRCLES &amp; DIVISIONS
+      </h3>
+      {ops_table}
+
+      <!-- Footer -->
+      <hr style="margin:28px 0 16px;border:none;border-top:1px solid #eee;">
+      <p style="font-size:11px;color:#999;margin:0;line-height:1.6;">
         Source: IMD Nowcast Warning system &nbsp;|&nbsp;
-        Scraped automatically by GitHub Actions.<br>
-        Attachments: district map PNG &bull; station map PNG
+        Auto-scraped by GitHub Actions (15-min interval)<br>
+        Attachments: district map PNG &bull; station map PNG<br>
+        Email triggered on severity escalation to orange/red only.
       </p>
     </div>
   </div>
@@ -852,28 +636,49 @@ def build_email_html(alert_info: dict, timestamp_human: str) -> str:
 </html>"""
 
 
-def send_alert_email(alert_info: dict, timestamp_human: str):
+def build_email_plain(escalated: list, timestamp_human: str) -> str:
+    lines = [
+        "IMD TPCODL WARNING ALERT",
+        f"Scraped at: {timestamp_human}",
+        "=" * 60,
+        "",
+        "DISTRICT WARNING STATUS",
+        "-" * 40,
+    ]
+    for r in escalated:
+        lines.append(
+            f"  {r['name']}  |  {r['severity'].upper()}  ({r['warning_color']})"
+            f"  |  Issued: {r.get('issued_at','—')}  Valid upto: {r.get('valid_upto','—')} Hrs"
+        )
+    lines += ["", "AFFECTED TPCODL CIRCLES & DIVISIONS", "-" * 40]
+    for r in escalated:
+        name    = r["name"].upper()
+        mapping = TPCODL_MAP.get(name, {})
+        circles   = ", ".join(mapping.get("circles",   ["-"]))
+        divisions = ", ".join(mapping.get("divisions", ["-"]))
+        lines.append(f"  {r['name']}")
+        lines.append(f"    Circles  : {circles}")
+        lines.append(f"    Divisions: {divisions}")
+    lines += ["", "=" * 60, "Source: IMD Nowcast Warning system"]
+    return "\n".join(lines)
+
+
+def send_alert_email(escalated: list, timestamp_human: str):
     if not GMAIL_FROM or not GMAIL_PASS or not EMAIL_TO:
         print("[scraper] Email env vars not set — skipping alert email")
         return
 
     recipients = [a.strip() for a in EMAIL_TO.split(",") if a.strip()]
 
-    all_triggered      = alert_info["districts"] + alert_info["stations"]
-    severities_present = {r["severity"] for r in all_triggered}
-    if "Warning" in severities_present:
-        severity_label = "⛔ WARNING"
-    elif "Alert" in severities_present:
-        severity_label = "🚨 ALERT"
-    else:
-        severity_label = "⚠️ WATCH"
-
-    location_names = [r["name"] for r in all_triggered]
-    locations_str  = ", ".join(location_names[:3])
-    if len(location_names) > 3:
-        locations_str += f" +{len(location_names) - 3} more"
-
-    subject = f"IMD {severity_label} — {locations_str}"
+    # Subject: severity label + circle count + division count
+    has_red       = any(r["warning_color"].lower() == "red" for r in escalated)
+    sev_label     = "⛔ WARNING" if has_red else "🚨 ALERT"
+    n_circles, n_divs = _subject_counts(escalated)
+    subject = (
+        f"IMD {sev_label} — "
+        f"{n_circles} Circle{'s' if n_circles != 1 else ''}, "
+        f"{n_divs} Division{'s' if n_divs != 1 else ''} Affected"
+    )
 
     msg = MIMEMultipart("mixed")
     msg["From"]    = GMAIL_FROM
@@ -881,10 +686,11 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
     msg["Subject"] = subject
 
     alt_part = MIMEMultipart("alternative")
-    alt_part.attach(MIMEText(build_email_plain(alert_info, timestamp_human), "plain"))
-    alt_part.attach(MIMEText(build_email_html(alert_info, timestamp_human),  "html"))
+    alt_part.attach(MIMEText(build_email_plain(escalated, timestamp_human), "plain"))
+    alt_part.attach(MIMEText(build_email_html(escalated,  timestamp_human), "html"))
     msg.attach(alt_part)
 
+    # Attach district + station map PNGs
     for attach_path in [
         DATA_DIR / f"district_warning_{STATE_ID}.png",
         DATA_DIR / f"station_warning_{STATE_ID}.png",
@@ -896,7 +702,10 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
             part = MIMEBase("application", "octet-stream")
             part.set_payload(f.read())
         encoders.encode_base64(part)
-        part.add_header("Content-Disposition", f'attachment; filename="{attach_path.name}"')
+        part.add_header(
+            "Content-Disposition",
+            f'attachment; filename="{attach_path.name}"',
+        )
         msg.attach(part)
         print(f"[scraper] Attached: {attach_path.name}")
 
@@ -905,83 +714,63 @@ def send_alert_email(alert_info: dict, timestamp_human: str):
             server.login(GMAIL_FROM, GMAIL_PASS)
             server.sendmail(GMAIL_FROM, recipients, msg.as_string())
         print(f"[scraper] Alert email sent → {', '.join(recipients)}")
+        print(f"[scraper] Subject: {subject}")
     except Exception as e:
         print(f"[scraper] ERROR sending email: {e}")
 
 
 # ─────────────────────────────────────────────────────────────
-# SUPABASE UPLOAD
-# Clears state_id rows then inserts fresh snapshot.
-# balloon_text + detail fields included for district rows.
+# SUPABASE — UPSERT (only changed rows)
 # ─────────────────────────────────────────────────────────────
 
-def build_supabase_rows(records: list, meta: dict) -> list:
-    return [
-        {
-            "scraped_at":            meta["scraped_at"],
-            "state_id":              meta["state_id"],
-            "type":                  r.get("type", ""),
-            "name":                  r.get("name", ""),
-            "warning_color":         r.get("warning_color", ""),
-            "severity":              r.get("severity", ""),
-            "issued_at":             r.get("issued_at") or None,
-            "valid_upto":            r.get("valid_upto") or None,
-            "balloon_text":          r.get("balloon_text") or None,
-            "rain_description":      r.get("rain_description") or None,
-            "thunderstorm_desc":     r.get("thunderstorm_desc") or None,
-            "lightning_probability": r.get("lightning_probability") or None,
-        }
-        for r in records
-    ]
+def upsert_district_warnings(
+    district_records: list,
+    prev_state: dict,
+    meta: dict,
+    sb: Client,
+):
+    """
+    Upsert district_warnings rows where warning_color has changed since
+    the last scan. On cold start (prev_state empty), upserts all rows.
 
+    Columns deliberately NOT written:
+        balloon_text, rain_description, thunderstorm_desc, lightning_probability
+    These are JS-rendered and unreliable — columns remain in DB untouched.
+    """
+    rows_to_upsert = []
+    for r in district_records:
+        name      = r["name"].upper()
+        new_rank  = COLOR_RANK.get(r["warning_color"].lower(), 0)
+        prev_rank = prev_state.get(name, -1)   # -1 = never seen → always upsert
+        if new_rank != prev_rank:
+            rows_to_upsert.append({
+                "scraped_at":    meta["scraped_at"],
+                "state_id":      meta["state_id"],
+                "type":          r.get("type", "district"),
+                "name":          r["name"],
+                "warning_color": r.get("warning_color", ""),
+                "severity":      r.get("severity", ""),
+                "issued_at":     r.get("issued_at") or None,
+                "valid_upto":    r.get("valid_upto") or None,
+            })
 
-def upload_to_supabase(district_records: list, station_records: list, meta: dict):
-    if not SUPABASE_KEY:
-        print("[scraper] SUPABASE_KEY not set — skipping Supabase upload")
+    if not rows_to_upsert:
+        print("[scraper] Supabase: no color changes — 0 rows upserted")
         return
+
     try:
-        sb: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        sb.table(DISTRICT_TABLE).upsert(
+            rows_to_upsert,
+            on_conflict="state_id,name",
+        ).execute()
+        print(f"[scraper] Supabase: upserted {len(rows_to_upsert)} changed row(s) → '{DISTRICT_TABLE}'")
     except Exception as e:
-        print(f"[scraper] Supabase client error: {e}")
-        return
-
-    for table, records in [
-        (DISTRICT_TABLE, district_records),
-        (STATION_TABLE,  station_records),
-    ]:
-        try:
-            sb.table(table).delete().eq("state_id", STATE_ID).execute()
-            print(f"[scraper] Supabase: cleared '{table}' for state_id={STATE_ID}")
-
-            rows = build_supabase_rows(records, meta)
-            if not rows:
-                print(f"[scraper] Supabase: no rows for '{table}' — skipping")
-                continue
-
-            total = 0
-            for i in range(0, len(rows), 100):
-                sb.table(table).insert(rows[i:i + 100]).execute()
-                total += len(rows[i:i + 100])
-            print(f"[scraper] Supabase: {total} rows → '{table}'")
-        except Exception as e:
-            print(f"[scraper] Supabase ERROR on '{table}': {e}")
+        print(f"[scraper] Supabase ERROR on upsert: {e}")
 
 
 # ─────────────────────────────────────────────────────────────
 # FILE SAVERS
 # ─────────────────────────────────────────────────────────────
-
-def save_snapshot(name: str, html: str, timestamp: str):
-    (DATA_DIR / f"{name}_{timestamp}.html").write_text(html, encoding="utf-8")
-
-
-def save_json(filename: str, records: list, meta: dict):
-    (DATA_DIR / filename).write_text(
-        json.dumps({"meta": meta, "count": len(records), "records": records},
-                   indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-
 
 def save_csv(filename: str, records: list, meta: dict, extra_fields: list = None):
     fieldnames = [
@@ -992,13 +781,11 @@ def save_csv(filename: str, records: list, meta: dict, extra_fields: list = None
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for r in records:
-            writer.writerow({"scraped_at": meta["scraped_at"],
-                             "state_id":   meta["state_id"], **r})
-
-
-def append_history(records: list, meta: dict):
-    with open(DATA_DIR / "warnings_history.jsonl", "a", encoding="utf-8") as f:
-        f.write(json.dumps({"meta": meta, "records": records}, ensure_ascii=False) + "\n")
+            writer.writerow({
+                "scraped_at": meta["scraped_at"],
+                "state_id":   meta["state_id"],
+                **r,
+            })
 
 
 # ─────────────────────────────────────────────────────────────
@@ -1008,91 +795,74 @@ def append_history(records: list, meta: dict):
 def main():
     clean_old_files()
 
-    timestamp       = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     timestamp_human = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-
-    # ── DISTRICT PAGE (with balloon popup capture) ────────────────────────
-    district_html, balloon_map = load_district_page(
-        DISTRICT_URL, f"district_warning_{STATE_ID}.png"
-    )
-    save_snapshot("district_snapshot", district_html, timestamp)
-    district_records = extract_district_records(district_html, balloon_map)
-
-    # ── STATION PAGE ──────────────────────────────────────────────────────
-    station_html = load_page(STATION_URL, f"station_warning_{STATE_ID}.png")
-    save_snapshot("station_snapshot", station_html, timestamp)
-    station_records = extract_station_records(station_html)
-
-    # ── Enrich districts without balloon data from station consensus ──────
-    district_records = enrich_district_issued_at(district_records, station_records)
-
-    all_records = district_records + station_records
-
-    print(f"\n[scraper] District : {len(district_records)} records")
-    print(f"[scraper] Station  : {len(station_records)} records")
-    print(f"[scraper] Total    : {len(all_records)} records")
-
-    if not all_records:
-        print("\n[scraper] ERROR: no data extracted — aborting")
-        sys.exit(1)
-
     meta = {
-        "scraped_at":   timestamp_human,
-        "state_id":     STATE_ID,
-        "district_url": DISTRICT_URL,
-        "station_url":  STATION_URL,
+        "scraped_at": timestamp_human,
+        "state_id":   STATE_ID,
     }
 
-    # ── District files ────────────────────────────────────────────────────
-    save_json("district_warnings_latest.json", district_records, meta)
-    save_csv(
-        "district_warnings_latest.csv", district_records, meta,
-        extra_fields=[
-            "issued_at", "valid_upto",
-            "balloon_text", "rain_description",
-            "thunderstorm_desc", "lightning_probability",
-        ],
-    )
+    # ── DISTRICT PAGE ─────────────────────────────────────────
+    district_html    = load_district_page(DISTRICT_URL, f"district_warning_{STATE_ID}.png")
+    district_records = extract_district_records(district_html)
 
-    # ── Station files ─────────────────────────────────────────────────────
-    save_json("station_warnings_latest.json", station_records, meta)
-    save_csv(
-        "station_warnings_latest.csv", station_records, meta,
-        extra_fields=[
-            "issued_at", "valid_upto",
-            "rain_description", "thunderstorm_desc", "lightning_probability",
-        ],
-    )
+    # ── STATION PAGE (time enrichment only) ───────────────────
+    station_html    = load_station_page(STATION_URL, f"station_warning_{STATE_ID}.png")
+    station_records = extract_station_records(station_html)
 
-    # ── Combined files ────────────────────────────────────────────────────
-    save_json("warnings_latest.json", all_records, meta)
-    save_csv(
-        "warnings_latest.csv", all_records, meta,
-        extra_fields=[
-            "issued_at", "valid_upto",
-            "balloon_text", "rain_description",
-            "thunderstorm_desc", "lightning_probability",
-        ],
-    )
+    # ── Enrich districts with consensus issued_at / valid_upto ─
+    district_records = enrich_district_issued_at(district_records, station_records)
 
-    append_history(all_records, meta)
+    print(f"\n[scraper] District : {len(district_records)} records")
+    print(f"[scraper] Station  : {len(station_records)} records (time enrichment only, not uploaded)")
 
-    # ── Supabase ──────────────────────────────────────────────────────────
-    upload_to_supabase(district_records, station_records, meta)
+    if not district_records:
+        print("\n[scraper] ERROR: no district data extracted — aborting")
+        sys.exit(1)
 
-    # ── Severity summary ──────────────────────────────────────────────────
-    print("\n[scraper] Severity Summary")
-    for label, recs in [("District", district_records), ("Station", station_records)]:
-        counts = Counter(r["severity"] for r in recs)
-        print(f"  {label}: " + "  ".join(f"{s}={c}" for s, c in sorted(counts.items())))
-
-    # ── Alert email ───────────────────────────────────────────────────────
-    alert_info = check_alerts(district_records, station_records)
-    if alert_info["should_alert"]:
-        print("\n[scraper] 🚨 HIGH ALERT — sending email...")
-        send_alert_email(alert_info, timestamp_human)
+    # ── Supabase client ───────────────────────────────────────
+    sb = None
+    prev_state: dict = {}
+    if SUPABASE_KEY:
+        try:
+            sb = create_client(SUPABASE_URL, SUPABASE_KEY)
+            # READ previous state BEFORE writing — needed for escalation check
+            prev_state = read_previous_state(sb)
+        except Exception as e:
+            print(f"[scraper] Supabase client error: {e}")
     else:
-        print("\n[scraper] No high-severity alerts")
+        print("[scraper] SUPABASE_KEY not set — skipping Supabase operations")
+
+    # ── Severity summary ──────────────────────────────────────
+    print("\n[scraper] District severity summary:")
+    counts = Counter(r["severity"] for r in district_records)
+    print("  " + "  ".join(f"{s}={c}" for s, c in sorted(counts.items())))
+
+    # ── TPCODL escalation check ───────────────────────────────
+    escalated = check_tpcodl_escalation(district_records, prev_state)
+
+    # ── Send alert email if escalation detected ───────────────
+    if escalated:
+        print(f"\n[scraper] {len(escalated)} TPCODL district(s) escalated — sending email...")
+        send_alert_email(escalated, timestamp_human)
+    else:
+        print("\n[scraper] No TPCODL escalations — no email sent")
+
+    # ── Upsert to Supabase (only changed rows) ────────────────
+    if sb:
+        upsert_district_warnings(district_records, prev_state, meta, sb)
+        # station_warnings: not written
+
+    # ── Save district CSV (audit trail in git) ────────────────
+    save_csv(
+        "district_warnings_latest.csv",
+        district_records,
+        meta,
+        extra_fields=["issued_at", "valid_upto"],
+    )
+    print(f"[scraper] Saved district_warnings_latest.csv ({len(district_records)} rows)")
+
+    # Station CSV: intentionally not saved — no longer needed
+    # warnings_history.jsonl: removed — Supabase is the source of truth
 
     print("\n[scraper] SUCCESS")
 
