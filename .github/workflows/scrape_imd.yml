@@ -1,9 +1,15 @@
-name: IMD Multi Warning Scraper
+name: IMD TPCODL Warning Scraper
 
 on:
   # Triggered by Supabase pg_cron → Edge Function → workflow_dispatch
-  # for precise IST-aligned timing (seconds accuracy).
+  # Fires every 15 minutes (96×/day) for IST-aligned scanning.
   workflow_dispatch:
+
+# Cancel any in-progress run when a new trigger fires.
+# Prevents run pile-up at 96 triggers/day.
+concurrency:
+  group: imd-scraper
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -11,7 +17,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 3
 
     steps:
 
@@ -25,49 +31,42 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Install Playwright Chromium
-        run: |
-          python -m playwright install chromium
+        run: python -m playwright install chromium
 
       - name: Run scraper
-        run: |
-          python scripts/scrape_imd.py
+        run: python scripts/scrape_imd.py
         env:
           IMD_STATE_ID: '10'
           PYTHONUNBUFFERED: '1'
-          GMAIL_FROM: ${{ secrets.GMAIL_FROM }}
+          GMAIL_FROM:         ${{ secrets.GMAIL_FROM }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          ALERT_EMAIL_TO:     ${{ secrets.ALERT_EMAIL_TO }}
+          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:       ${{ secrets.SUPABASE_KEY }}
 
       - name: Commit and push data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Force-add PNGs (bypasses any gitignore, ensures new files are tracked)
+          # Force-add PNGs (bypasses gitignore; ensures new files are tracked)
           git add -f data/*.png
-          git add data/
+          git add data/district_warnings_latest.csv
 
           TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-
-          # --allow-empty ensures PNGs are always committed even when pixel
-          # content is unchanged (e.g. all-green map between two runs).
           git commit --allow-empty -m "data: IMD scrape ${TIMESTAMP}"
           git push
 
-      - name: Upload snapshots
-        if: always()
+      - name: Upload snapshots on failure
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: imd-snapshots
+          name: imd-snapshots-failure
           path: |
-            data/*.html
             data/*.png
             data/*.csv
-          retention-days: 3
+          retention-days: 2
           if-no-files-found: ignore
