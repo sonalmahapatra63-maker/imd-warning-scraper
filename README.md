@@ -1,7 +1,7 @@
-# IMD Warning Scraper
+# IMD Warning Scraper — TPCODL Districts
 
 Automated scraper for [IMD Nowcast Warnings](https://mausam.imd.gov.in/) (Odisha — State ID 10).  
-Runs every 3 hours via GitHub Actions, saves data to CSV/JSON, uploads to Supabase, and sends a Gmail alert when a **red (Warning)** alert is detected for monitored locations.
+Monitors all **8 TPCODL coverage districts**, runs every 15 minutes via GitHub Actions + Supabase pg_cron, saves data to CSV, uploads to Supabase, and sends a structured Gmail alert (with PDF report) when any district escalates to **orange (Alert)** or **red (Warning)**.
 
 ---
 
@@ -14,14 +14,8 @@ imd-warning-scraper/
 │       └── scrape_imd.yml          # GitHub Actions workflow
 ├── data/                           # Auto-generated output (committed each run)
 │   ├── district_warnings_latest.csv
-│   ├── district_warnings_latest.json
-│   ├── station_warnings_latest.csv
-│   ├── station_warnings_latest.json
-│   ├── warnings_latest.csv         # Combined (district + station)
-│   ├── warnings_latest.json
-│   ├── warnings_history.jsonl      # Append-only history log
-│   ├── district_warning_10.png     # Screenshot — district map
-│   └── station_warning_10.png      # Screenshot — station map
+│   ├── district_warning_10.png     # Screenshot — full district map
+│   └── district_hover_<name>_10.png  # Hover screenshots (escalation runs only)
 ├── scripts/
 │   └── scrape_imd.py               # Main scraper
 ├── requirements.txt
@@ -32,115 +26,186 @@ imd-warning-scraper/
 
 ## 📊 Data Schema
 
-Both CSVs share the same column structure:
+### Supabase table: `district_warnings`
 
-| Column | Description |
-|---|---|
-| `scraped_at` | UTC timestamp of the scrape run, e.g. `2026-05-11 22:15 UTC` |
-| `state_id` | IMD state ID (10 = Odisha) |
-| `type` | `district` or `station` |
-| `name` | District or station name |
-| `warning_color` | Human-readable colour: `green`, `yellow`, `orange`, `red` |
-| `severity` | `No Warning`, `Watch`, `Alert`, `Warning` |
-| `issued_at` | When the warning was issued, e.g. `2026-05-11 2200` (stations only) |
-| `valid_upto` | Valid until time in Hrs, e.g. `0100` (stations only) |
+| Column | Type | Description |
+|---|---|---|
+| `scraped_at` | text | UTC timestamp, e.g. `2026-05-19 09:03 UTC` |
+| `state_id` | int4 | IMD state ID (always `10` for Odisha) |
+| `type` | text | Always `district` |
+| `name` | text | District name in CAPS, e.g. `KHORDHA` |
+| `warning_color` | text | `green` / `yellow` / `orange` / `red` |
+| `severity` | text | `No Warning` / `Watch` / `Alert` / `Warning` |
+| `issued_at` | text | Warning issue time, e.g. `2026-05-19 1900` |
+| `valid_upto` | text | Valid until time in Hrs, e.g. `2200` |
+| `balloon_text` | text | Raw balloon hover text from IMD map |
+| `rain_description` | text | Full rain line extracted from balloon |
+| `thunderstorm_desc` | text | Full thunderstorm/wind line from balloon |
+| `lightning_probability` | text | Full lightning line from balloon |
+
+> **Note:** `issued_at` and weather fields are populated from balloon hover extraction (not the district map HTML), which gives accurate real-time values.
 
 ### Severity / Colour mapping
 
-| Color | Severity | Meaning |
+| Color | Severity | Rank | Action |
+|---|---|---|---|
+| 🟢 `green` | No Warning | 0 | No adverse weather |
+| 🟡 `yellow` | Watch | 1 | Be updated |
+| 🟠 `orange` | Alert | 2 | Be prepared — **email triggered** |
+| 🔴 `red` | Warning | 3 | Take action — **email triggered** |
+
+---
+
+## 🏭 Monitored Districts (TPCODL Coverage)
+
+| District | Circle(s) | Divisions |
 |---|---|---|
-| 🟢 `green` | No Warning | No adverse weather |
-| 🟡 `yellow` | Watch | Be updated |
-| 🟠 `orange` | Alert | Be prepared |
-| 🔴 `red` | Warning | Take action |
+| ANUGUL | DHENKANAL | ANED ANGUL, TED CHAINPAL |
+| CUTTACK | CUTTACK, BBSR-1, BBSR-2 | AED ATHAGARH, BCDD-II BBSR, CDD-I/II Cuttack, CED Cuttack, KHED Khurda, SED SALIPUR |
+| DHENKANAL | DHENKANAL | DED DHENKANAL, TED CHAINPAL |
+| JAGATSINGHPUR | PARADEEP | JED JAGATSINGHPUR, PAED PARADEEP |
+| KENDRAPARA | PARADEEP | KED-I KENDRAPARA, KED-II MARSHAGHAI |
+| KHORDHA | BBSR1, BBSR2 | BCDD-I/II BBSR, BED BBSR, KHED KHORDHA, NYED NAYAGARH, NED NIMAPARA, BAED BALUGAON |
+| NAYAGARH | BBSR2 | NYED NAYAGARH, KHED KHORDHA, BAED BALUGAON |
+| PURI | BBSR2, BBSR1 | PED PURI, BED BBSR, KHED KHORDHA, NED NIMAPARA |
 
 ---
 
 ## ⏰ Schedule
 
-IMD updates its nowcast every 3 hours. The scraper runs **15 minutes after each update** to ensure fresh data is available:
+The scraper runs **every 15 minutes** via dual-repo redundancy triggered by Supabase pg_cron:
 
-| IMD Update (IST) | Scraper Runs (IST) | Cron (UTC) |
+| Repo | Account | Trigger times (every hour) |
 |---|---|---|
-| 22:00 | 22:15 | `45 16 * * *` |
-| 01:00 | 01:15 | `45 19 * * *` |
-| 04:00 | 04:15 | `45 22 * * *` |
-| 07:00 | 07:15 | `45 1 * * *` |
-| 10:00 | 10:15 | `45 4 * * *` |
-| 13:00 | 13:15 | `45 7 * * *` |
-| 16:00 | 16:15 | `45 10 * * *` |
-| 19:00 | 19:15 | `45 13 * * *` |
+| `imd-warning-scraper` | sonalmahapatra63-maker | :03 and :33 |
+| `imd-scraper-b` | second account | :18 and :48 |
+
+Both repos run identical code and write all 8 rows to the same Supabase table on every run.
+
+```
+Supabase pg_cron
+  ├── imd-repo-a  → :03 and :33 every hour
+  └── imd-repo-b  → :18 and :48 every hour
+          ↓
+  Supabase Edge Function: trigger-imd-scraper
+          ↓
+  GitHub Actions: workflow_dispatch → scrape_imd.py
+```
 
 You can also trigger a manual run anytime from **Actions → Run workflow**.
 
 ---
 
-## 🗄️ Supabase Integration
+## 🗄️ Supabase Setup
 
-Each scrape run clears and repopulates two Supabase tables:
-
-| Table | Contents |
-|---|---|
-| `district_warnings` | District-wise nowcast warnings |
-| `station_warnings` | Station-wise nowcast warnings |
-
-### One-time Supabase setup
-
-**1. Create the tables** — run in Supabase SQL Editor:
+### One-time table creation
 
 ```sql
 CREATE TABLE district_warnings (
-    id            bigserial PRIMARY KEY,
-    scraped_at    text,
-    state_id      text,
-    type          text,
-    name          text,
-    warning_color text,
-    severity      text,
-    issued_at     text,
-    valid_upto    text
-);
-
-CREATE TABLE station_warnings (
-    id            bigserial PRIMARY KEY,
-    scraped_at    text,
-    state_id      text,
-    type          text,
-    name          text,
-    warning_color text,
-    severity      text,
-    issued_at     text,
-    valid_upto    text
+    id                    bigserial PRIMARY KEY,
+    scraped_at            text,
+    state_id              int4,
+    type                  text,
+    name                  text,
+    warning_color         text,
+    severity              text,
+    issued_at             text,
+    valid_upto            text,
+    balloon_text          text,
+    rain_description      text,
+    thunderstorm_desc     text,
+    lightning_probability text,
+    UNIQUE (state_id, name)
 );
 ```
 
-**2. Disable RLS** (allows the anon key to insert/delete):
+> The `UNIQUE(state_id, name)` constraint is required — the scraper uses upsert on conflict to update all 8 rows every run.
+
+### Add missing columns (if upgrading from an older schema)
 
 ```sql
-ALTER TABLE district_warnings DISABLE ROW LEVEL SECURITY;
-ALTER TABLE station_warnings  DISABLE ROW LEVEL SECURITY;
+ALTER TABLE district_warnings
+  ADD COLUMN IF NOT EXISTS rain_description      text,
+  ADD COLUMN IF NOT EXISTS thunderstorm_desc     text,
+  ADD COLUMN IF NOT EXISTS lightning_probability text,
+  ADD COLUMN IF NOT EXISTS balloon_text          text;
+```
+
+### Useful queries
+
+```sql
+-- Current state of all 8 TPCODL districts
+SELECT name, warning_color, severity, issued_at, valid_upto,
+       rain_description, thunderstorm_desc, lightning_probability, scraped_at
+FROM district_warnings WHERE state_id = 10 ORDER BY name;
+
+-- Manually set a district to orange (to test normalisation email)
+UPDATE district_warnings
+SET warning_color = 'orange', severity = 'Alert'
+WHERE state_id = 10 AND name = 'PURI';
+
+-- Check scraper trigger log
+SELECT trigger_type, status, http_code, notes, triggered_at
+FROM scraper_trigger_log ORDER BY triggered_at DESC LIMIT 10;
+
+-- Check pg_cron jobs
+SELECT jobid, jobname, schedule FROM cron.job;
 ```
 
 ---
 
 ## 🚨 Email Alerts
 
-A Gmail alert is sent when a **red (Warning)** severity is detected for any of these monitored locations:
+### Alert email (escalation)
 
-**District:** KHORDHA  
-**Stations:** Bhubaneshwar AP, Cuttack, Khordha, Bhubaneshwar OUAT
+Sent when any district moves **from a lower rank to orange or red** compared to the previous scan.
 
-The email includes:
-- Which district/station triggered the alert
-- Severity level and warning colour
-- Issued at / Valid upto times
-- Both map screenshots attached as PNG
+**Contents:**
+- IMD-style header (red for WARNING, orange for ALERT) with valid time range
+- Scan summary bar (scanned at · active count · escalation count · next refresh)
+- 3-column district cards for every currently active district, sorted red → orange, new before existing. Each card shows: time range, severity (with ↑ NEW badge if newly escalated), rain, wind, lightning, circle, divisions
+- Kalabaisakhi timing summary box with start/end times per active district
+- IMD-branded footer
+
+**Attachments:**
+- `district_warning_10.png` — full district overview map
+- `district_hover_<name>_10.png` — one per escalated district (balloon visible)
+- `IMD_TPCODL_Report_<HHMM>IST.pdf` — structured PDF report containing:
+  - Page 1: Summary (IMD header + count strip + 3 tables: status, circles/divisions, weather details)
+  - Page 2: Full district overview map screenshot
+  - Page 3+: One hover screenshot per escalated district
+
+**Subject format:**
+```
+IMD [WARNING] WARNING -- Khordha -- 2 Circles, 7 Divisions Affected
+IMD [ALERT] ALERT -- Puri, Nayagarh -- 3 Circles, 7 Divisions Affected
+```
+
+### All-clear email (normalisation)
+
+Sent when any district drops **from orange/red to yellow or green** compared to the previous scan.
+
+**Contents:**
+- Green header with check-circle icon and "IMD NOWCAST — ALL CLEAR (TPCODL)"
+- Explanation paragraph
+- Downgrade cards per district showing Was → Now severity badge
+
+**Attachments:**
+- `IMD_TPCODL_AllClear_<HHMM>IST.pdf` — same summary page structure with green header; overview map only (no hover screenshots)
+
+**Subject format:**
+```
+IMD [RESOLVED] -- Puri (Alert->No Warning)
+IMD [DOWNGRADED] -- Nayagarh (Alert->Watch)
+```
+
+> Both emails can fire in the **same run** independently if different districts escalate and normalise simultaneously.
 
 ---
 
 ## 🔐 GitHub Secrets
 
-Go to **Settings → Secrets and variables → Actions** and add these secrets:
+Go to **Settings → Secrets and variables → Actions** and add:
 
 | Secret | Description |
 |---|---|
@@ -148,7 +213,9 @@ Go to **Settings → Secrets and variables → Actions** and add these secrets:
 | `GMAIL_APP_PASSWORD` | 16-character Gmail App Password (not your login password) |
 | `ALERT_EMAIL_TO` | Recipient(s), comma-separated, e.g. `a@x.com,b@y.com` |
 | `SUPABASE_URL` | Your Supabase project URL |
-| `SUPABASE_KEY` | Your Supabase anon/publishable key |
+| `SUPABASE_KEY` | **Service role key** (not anon/publishable key) — required for upsert |
+
+> ⚠️ Both repos must use the **service_role key**, not the anon key. The anon key does not have permission to upsert all rows.
 
 ### How to create a Gmail App Password
 
@@ -166,6 +233,7 @@ playwright>=1.53.0
 beautifulsoup4==4.12.3
 lxml==5.2.2
 supabase==2.10.0
+reportlab>=4.0.0
 ```
 
 Install locally:
@@ -193,7 +261,7 @@ export GMAIL_FROM=you@gmail.com
 export GMAIL_APP_PASSWORD=your_app_password
 export ALERT_EMAIL_TO=recipient@example.com
 export SUPABASE_URL=https://odrvhelastdyozjejqss.supabase.co
-export SUPABASE_KEY=your_supabase_key
+export SUPABASE_KEY=your_service_role_key
 
 # Run
 python scripts/scrape_imd.py
@@ -203,9 +271,24 @@ Output files will be saved to the `data/` folder.
 
 ---
 
-## 📝 Notes
+## 📝 Key Design Decisions
 
-- The `data/` folder is committed to the repo after every successful scrape so you have a version-controlled history of warning states.
-- `warnings_history.jsonl` is append-only and never deleted — it builds up a full timeline across all runs.
-- All other files in `data/` are deleted and rewritten fresh each run.
-- District `issued_at` and `valid_upto` are empty because the IMD district map page does not expose time information (unlike the station page).
+| Rule | Reason |
+|---|---|
+| Email sent **before** Supabase upsert | Escalation check uses the previous run's data — if upsert ran first, there would be nothing to escalate |
+| Always upsert **all 8 rows** every run | Prevents stale state causing repeat alert emails on subsequent runs |
+| PDF built **in-memory only** (io.BytesIO) | Never written to disk or committed to git — zero repo storage cost |
+| `state_id` cast to `int()` everywhere | Supabase column is int4 — string comparison fails silently |
+| IST system clock for email timestamps | Reported-at shown in IST for readability; scraped_at stored in UTC |
+| Hover screenshots only on escalation | Second Playwright browser is expensive — not needed for normalisation |
+| `UNIQUE(state_id, name)` constraint | Enables safe upsert without duplicate rows accumulating |
+
+---
+
+## 🐛 Known Limitations & Planned Features
+
+| Item | Status |
+|---|---|
+| Duplicate email guard (both repos read prev=green before either writes) | Planned — add `last_alerted_at` column, skip if alerted < 10 min ago |
+| Midnight boundary display (valid_upto < issued_at time) | Planned — detect and append "(next day)" label |
+| Telegram Bot integration (free alternative to WhatsApp group alerts) | Planned — ~15 lines using `requests`, add `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` secrets |
